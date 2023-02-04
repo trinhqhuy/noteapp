@@ -1,11 +1,22 @@
 import MenuButton from "./MenuButton";
-
+import { useContext } from "react";
+import { ButtonContext } from "../context/AppContext";
 const BoxContentPin = (props) => {
+  const sendValue = useContext(ButtonContext);
   const handleDelete = (id) => {
     props.id;
   };
   return (
-    <div className="snap-center ">
+    <a
+      className="snap-center"
+      onClick={() =>
+        sendValue.setState({
+          ...sendValue.state,
+          isShowMoreNote: true,
+          title: props.title,
+          content: props.content,
+        })
+      }>
       <div className="relative z-2 justify-end right-[20px] top-[30px] grid align-top">
         {/* <MenuButton /> */}
       </div>
@@ -16,7 +27,7 @@ const BoxContentPin = (props) => {
           {props.content}
         </div>
       </div>
-    </div>
+    </a>
   );
 };
 

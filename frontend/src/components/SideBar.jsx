@@ -1,5 +1,4 @@
 import FolderItem from "./FolderItem";
-import PlusIcon from "../assets/plusIcon.png";
 import { ButtonContext } from "../context/AppContext";
 import { useContext, useState } from "react";
 const SideBar = (props) => {

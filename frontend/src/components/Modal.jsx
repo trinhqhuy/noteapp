@@ -4,8 +4,8 @@ const Modal = (props) => {
   const isShowModalBtn = useContext(ButtonContext);
 
   return (
-    <div className="fixed z-50 overflow-y-auto top-0 w-full left-0 ">
-      <div className="flex items-center justify-center min-height-100vh pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+    <div className="fixed z-50 overflow-y-auto top-0 w-full left-0 backdrop-blur-[2px]">
+      <div className="flex items-center justify-center min-height-100vh pt-4 px-4 pb-20 text-center sm:block sm:p-0 ">
         <div className="fixed inset-0 transition-opacity">
           <div
             className="absolute inset-0"
@@ -14,6 +14,7 @@ const Modal = (props) => {
                 ...isShowModalBtn.state,
                 isClickAddFolderModal: false,
                 isClickAddNoteBtn: false,
+                isShowMoreNote: false,
               })
             }
           />

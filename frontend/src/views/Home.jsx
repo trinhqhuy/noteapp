@@ -14,7 +14,7 @@ import AddFolerForm from "../features/AddFolerForm";
 import AddNoteForm from "../features/AddNoteForm";
 import { ButtonContext } from "../context/AppContext";
 import { readAllNote } from "../redux/apiRequest";
-
+import ShowMoreNote from "../features/ShowMoreNote";
 const Home = () => {
   const isShowModal = useContext(ButtonContext);
   const [isParentValue, setIsParentValue] = useState(0); // send id to child
@@ -22,7 +22,6 @@ const Home = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.login?.currentUser);
   const folderList = useSelector((state) => state.folders.getAll?.allFolder);
-  
 
   let axiosJWT = createAxios(user, dispatch, loginSuccess);
   useEffect(() => {
@@ -55,6 +54,13 @@ const Home = () => {
         {isShowModal.state.isClickAddNoteBtn ? (
           <Modal title="Add note">
             <AddNoteForm />
+          </Modal>
+        ) : (
+          <></>
+        )}
+        {isShowModal.state.isShowMoreNote ? (
+          <Modal title={isShowModal.state.title}>
+            <ShowMoreNote content={isShowModal.state.content} />
           </Modal>
         ) : (
           <></>

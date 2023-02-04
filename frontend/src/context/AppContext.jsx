@@ -9,6 +9,9 @@ const AppContext = ({ children }) => {
     isClickSideBarItem: false,
     isReset: false,
     isIdFolder: "",
+    isShowMoreNote: false,
+    title: "",
+    content: "",
   });
   const ButtonState = {
     state,

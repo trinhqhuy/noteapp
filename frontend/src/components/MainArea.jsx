@@ -1,7 +1,7 @@
 import CircleBackground from "./CircleBackground";
 import NoteArea from "./NoteArea";
 import BoxContentPin from "./BoxContentPin";
-import { useState, useContext, Suspense } from "react";
+import { useState, useContext } from "react";
 import FloatBtn from "./FloatBtn";
 import Girl from "../assets/illustrations/Girl.png";
 import { readAllNote } from "../redux/apiRequest";

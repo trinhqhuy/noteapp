@@ -1,13 +1,6 @@
 import BoxContent from "./BoxContent";
-import { ButtonContext } from "../context/AppContext";
-import { useContext } from "react";
-import { readAllNote } from "../redux/apiRequest";
-import { readAllNotesSuccess } from "../redux/noteSlide";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { createAxios } from "../redux/createInstance";
-import { loginSuccess } from "../redux/authSlice";
-import { useEffect } from "react";
+import { useSelector } from "react-redux";
+
 const NoteArea = (props) => {
   // console.log(props.noteArray);
   // console.log(isNumber.state.is_idFolder);
