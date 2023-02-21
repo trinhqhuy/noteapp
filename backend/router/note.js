@@ -5,7 +5,7 @@ const router = require("express").Router();
 
 router.get("/:id", middlewareController.verifyToken, noteController.readNote);
 router.post("/", middlewareController.verifyToken, noteController.createNote);
-router.put("/:id", middlewareController.verifyToken, noteController.updateNote);
+router.put("/", middlewareController.verifyToken, noteController.updateNote);
 router.delete(
   "/:id",
   middlewareController.verifyToken,

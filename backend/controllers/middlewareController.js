@@ -7,13 +7,13 @@ const middlewareController = {
       const accessToken = token.split(" ")[1];
       jwt.verify(accessToken, process.env.JWT_ACCESS_KEY, (err, user) => {
         if (err) {
-          res.status(403).json("Token is not valid");
+          res.status(403).json("Token is not valid on md");
         }
         req.user = user;
         next();
       });
     } else {
-      return res.status(401).json("You're not authencated");
+      return res.status(401).json("You're not authencated on md");
     }
   },
   //verify Token of page it like brige conect to router and controller

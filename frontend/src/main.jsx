@@ -5,13 +5,15 @@ import "./index.css";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./redux/store";
-import AppContext from "./context/AppContext";
+import { StoreProvider } from "./context/GobalState";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
-      <AppContext>
+      {/* <ButtonContext> */}
+      <StoreProvider>
         <App />
-      </AppContext>
+      </StoreProvider>
+      {/* </ButtonContext> */}
     </PersistGate>
   </Provider>
 );

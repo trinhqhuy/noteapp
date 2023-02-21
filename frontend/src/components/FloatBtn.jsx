@@ -1,19 +1,11 @@
-import { ButtonContext } from "../context/AppContext";
+import { Store } from "../context/GobalState";
 import { useContext } from "react";
 function FloatBtn() {
-  const isShowAddNoteBtn = useContext(ButtonContext);
+  const { state, dispatch } = useContext(Store);
+
   return (
     <button
-      onClick={() =>
-        isShowAddNoteBtn.setState({
-          ...ButtonContext,
-          isClickHambergerBtn: isShowAddNoteBtn.state.isClickHambergerBtn,
-          isClickAddNoteBtn: true,
-          isLoading: isShowAddNoteBtn.state.isLoading,
-          isClickSideBarItem: isShowAddNoteBtn.state.isClickSideBarItem,
-          isIdFolder: isShowAddNoteBtn.state.isIdFolder,
-        })
-      }
+      onClick={() => dispatch({ type: "isAddNoteModal", payload: true })}
       className="group fixed w-[70px] h-[70px] bottom-5 right-5 inline-block bg-greatBlue/70 backdrop-blur-xl rounded-full">
       <i className="fa-solid fa-plus text-white w-5 h-5"></i>
       <span className="group-hover:flex group-hover:w-[90px] justify-center hidden group-hover:absolute group-hover:bottom-[100%] group-hover:right-[50%] group-hover:bg-white group-hover:p-2 rounded-full text-black dark:group-hover:text-white dark:group-hover:bg-gray-400">

@@ -1,7 +1,8 @@
 import FolderItem from "./FolderItem";
-import { ButtonContext } from "../context/AppContext";
 import { useContext, useState } from "react";
+import { Store } from "../context/GobalState";
 const SideBar = (props) => {
+  const { state, dispatch } = useContext(Store);
   const handleClick = (id) => {
     //show Right side
     // props.sendToParent(false)
@@ -13,12 +14,12 @@ const SideBar = (props) => {
   //  console.log(props.sendFolderList);
   // console.log(folderList);
   // theem vao  ben duoi neu muon nut xem them
-  const isShow = useContext(ButtonContext);
+  // const isShow = useContext(ButtonContext);
   return (
     <aside
       className={
-        isShow.state.isClickHambergerBtn
-          ? " w-1/2  md:visible lg:visible xl:visible sm:w-1/3 md:w-1/4 fixed z-30 md:sticky lg:sticky xl:sticky 2xl:sticky  h-screen bg-[#F0F5FE] dark:bg-gray-800 transition-all ease-in-out delay-150 -translate-y-1 duration-300 motion-safe:scale-100 scale-140 transform-gpu"
+        state.isHamberger
+          ? "w-1/2  md:visible lg:visible xl:visible sm:w-1/3 md:w-1/4 fixed z-30 md:sticky lg:sticky xl:sticky 2xl:sticky  h-screen bg-[#F0F5FE] dark:bg-gray-800 transition-all ease-in-out delay-150 -translate-y-1 duration-300 motion-safe:scale-100 scale-140 transform-gpu"
           : "invisible w-0 md:visible lg:visible xl:visible  md:w-1/4 lg:w-1/5 xl:w-1/5 fixed z-30 md:sticky lg:sticky xl:sticky 2xl:sticky top-22 h-[calc(100vh_-_10rem)] bg-[#F0F5FE] dark:bg-gray-800 "
       }
       aria-label="Sidebar">
@@ -30,10 +31,7 @@ const SideBar = (props) => {
           <a
             href="#"
             onClick={() =>
-              isShow.setState({
-                ...isShow.state,
-                isClickAddFolderModal: true,
-              })
+              dispatch({ type: "isAddFolderModal", payload: true })
             }
             className="group h-9 flex flex-row items-center justify-center py-3 bg-greatBlue p-3 shadow-[5px_10px_25px_10px_#BFDBFE] dark:shadow-[2px_4px_25px_5px_#2a4582] text-gray-900 rounded-lg dark:text-white hover:bg-greatBlue/70">
             <i className="fa-regular fa-folders text-white"></i>

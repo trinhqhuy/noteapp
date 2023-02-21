@@ -17,7 +17,7 @@ import storage from "redux-persist/lib/storage";
 const rootReducer = combineReducers({
   auth: authReducer,
   // users: userReducer,
-  folders: folderReducer,
+  folder: folderReducer,
   notes: noteReducer,
 });
 const persistConfig = {

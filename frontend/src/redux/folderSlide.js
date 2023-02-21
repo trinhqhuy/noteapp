@@ -1,53 +1,81 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice } from "@reduxjs/toolkit";
 
 const folderSlide = createSlice({
-    name: "folders",
-    initialState: {
-        getAll: {
-            allFolder: null,
-            isFetching: false,
-            error: false,
-        },
-        add: {
-            isFetching: false,
-            success: false,
-            error: false,
-        }
+  name: "folder",
+  initialState: {
+    getAll: {
+      allFolder: null,
+      isFetching: false,
+      error: false,
     },
-    reducers: {
-        getFolderStart: (state) =>  {
-            state.getAll.isFetching = true
-        },
-        getFolderSuccess: (state, action) => {
-            state.getAll.isFetching = false
-            state.getAll.allFolder = action.payload
-        },
-        getFolderFailed: (state) => {
-            state.getAll.isFetching = false
-            state.getAll.error = true
-        },
-        addFolderStart: (state) => {
-            state.add.isFetching = true
-            state.add.success = false
-            state.add.error = false
-        },
-        addFolderSuccess: (state) => {
-            state.add.isFetching = false
-            state.add.success = true
-            // state.add.error = false
-        },
-        addFolderFailed: (state) => {
-            state.add.isFetching = false
-            state.add.error = true
-        }
-    }
-})
+    folders: {
+      isFetching: false,
+      success: false,
+      error: false,
+    },
+  },
+  reducers: {
+    getFolderStart: (state) => {
+      state.getAll.isFetching = true;
+    },
+    getFolderSuccess: (state, action) => {
+      state.getAll.isFetching = false;
+      state.getAll.allFolder = action.payload;
+    },
+    getFolderFailed: (state) => {
+      state.getAll.isFetching = false;
+      state.getAll.error = true;
+    },
+    addFolderStart: (state) => {
+      state.folders.isFetching = true;
+      state.folders.success = false;
+      state.folders.error = false;
+    },
+    addFolderSuccess: (state) => {
+      state.folders.isFetching = false;
+      state.folders.success = true;
+      // state.add.error = false
+    },
+    addFolderFailed: (state) => {
+      state.folders.isFetching = false;
+      state.folders.error = true;
+    },
+    updateFolderStart: (state) => {
+      state.folders.isFetching = true;
+    },
+    updateFolderSuccess: (state) => {
+      state.folders.isFetching = false;
+      state.folders.success = true;
+    },
+    updateFolderFailed: (state) => {
+      state.folders.success = false;
+      state.folders.error = true;
+    },
+    deleteFolderStart: (state) => {
+      state.folders.isFetching = true;
+    },
+    deleteFolderSuccess: (state) => {
+      state.folders.isFetching = false;
+      state.folders.success = true;
+    },
+    deleteFolderFailed: (state) => {
+      state.folders.success = false;
+      state.folders.error = true;
+    },
+  },
+});
 export const {
-    getFolderStart,
-    getFolderSuccess,
-    getFolderFailed,
-    addFolderStart,
-    addFolderSuccess,
-    addFolderFailed
-} = folderSlide.actions
-export default folderSlide.reducer
+  getFolderStart,
+  getFolderSuccess,
+  getFolderFailed,
+  addFolderStart,
+  addFolderSuccess,
+  addFolderFailed,
+  updateFolderStart,
+  updateFolderSuccess,
+  updateFolderFailed,
+  deleteFolderStart,
+  deleteFolderSuccess,
+  deleteFolderFailed,
+} = folderSlide.actions;
+export default folderSlide.reducer;

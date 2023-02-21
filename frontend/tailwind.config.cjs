@@ -4,10 +4,12 @@ module.exports = {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      visibility: ["group-hover"],
       colors: {
         lightBlue: "#BFDBFE",
         middleBlue: "#6491fc",
         greatBlue: "#0E6EFC",
+        cyanBlue: "#56BDD1",
         greatGreen: "#B1FF03",
         darkGreen: "#007400",
         greatRed: "#ff5365",
@@ -17,6 +19,8 @@ module.exports = {
         "boucing-1": "jump-up 0.6s 0.1s linear infinite",
         "boucing-2": "jump-up 0.6s 0.2s linear infinite",
         "boucing-3": "jump-up 0.6s 0.3s linear infinite",
+        fadeIn: "fadeIn 0.6s",
+        fadeOut: "fadeOut 0.6s",
       },
       keyframes: {
         blob: {
@@ -35,6 +39,24 @@ module.exports = {
         },
         "jump-up": {
           "50%": { transform: "translate(0, 15px)" },
+        },
+        fadeIn: {
+          "0%": {
+            opacity: 0,
+          },
+
+          "100%": {
+            opacity: 0.4,
+          },
+        },
+        fadeOut: {
+          "0%": {
+            opacity: 1,
+          },
+
+          "100%": {
+            opacity: 0,
+          },
         },
       },
     },

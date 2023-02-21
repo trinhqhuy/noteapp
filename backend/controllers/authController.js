@@ -71,15 +71,21 @@ const authController = {
       if (user && validPassword) {
         const accessToken = authController.generateAccessToken(user);
         const refreshToken = authController.generateRefreshToken(user);
-
+        const setDay = new Date();
+        setDay.setTime(setDay.getTime() + 30 * 24 * 60 * 60 * 1000);
         await authController.generateToken(refreshToken);
         // refreshTokens.push(refreshToken);
         const { password, ...others } = user._doc;
+        res.header("Access-Control-Allow-Origin");
+        res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+        res.header("Access-Control-Allow-Header");
+        res.header("Content-Type", "application/json; charset=UTF-8");
         res.cookie("refreshToken", refreshToken, {
           httpOnly: true,
           secure: true,
           path: "/",
           sameSite: "strict",
+          expires: setDay,
         });
         return res.status(200).json({ ...others, accessToken, refreshToken }); // luu cookie o phia frontend
       }
@@ -115,15 +121,22 @@ const authController = {
       //create new access token, refresh token and send to user
       const newAccessToken = authController.generateAccessToken(user);
       const newRefreshToken = authController.generateRefreshToken(user);
+      const setDay = new Date();
+      setDay.setTime(setDay.getTime() + 30 * 24 * 60 * 60 * 1000);
       await refreshTokens.updateOne(
         { token: validToken?.token },
         { token: newRefreshToken }
       );
+      res.header("Access-Control-Allow-Origin");
+      res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+      res.header("Access-Control-Allow-Header");
+      res.header("Content-Type", "application/json; charset=UTF-8");
       res.cookie("refreshToken", newRefreshToken, {
         httpOnly: true,
         secure: true,
         path: "/",
         sameSite: "strict",
+        expires: setDay,
       });
       return res.status(200).json({
         accessToken: newAccessToken,

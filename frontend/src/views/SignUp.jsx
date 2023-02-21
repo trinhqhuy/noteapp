@@ -8,8 +8,8 @@ import { useEffect } from "react";
 import { registerUser } from "../redux/apiRequest";
 import { useDispatch, useSelector } from "react-redux";
 const SignUp = () => {
-  const dispatch = useDispatch()
-  let navigate = useNavigate()
+  const dispatch = useDispatch();
+  let navigate = useNavigate();
   const [isHidePassword, setHidePassword] = useState(true);
   const onChangeInputPassword = () => {
     if (isHidePassword === false) {
@@ -26,7 +26,7 @@ const SignUp = () => {
       setHideRePassword(false);
     }
   };
-  const user = useSelector((state) => state.auth.login?.currentUser)
+  const user = useSelector((state) => state.auth.login?.currentUser);
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -59,16 +59,16 @@ const SignUp = () => {
       const newUser = {
         username: values.username,
         password: values.password,
-        email: values.email
-      }
-      registerUser(newUser, dispatch, navigate)
+        email: values.email,
+      };
+      registerUser(newUser, dispatch, navigate);
     },
   });
   useEffect(() => {
-    if(user) {
-      navigate("/")
+    if (user) {
+      navigate("/");
     }
-  })
+  });
   return (
     <div className="grid grid-cols-1 gap-3 md:gap-0 lg:gap-0 xl:gap-0 2xl:gap-0 md:relative lg:relative xl:relative 2xl:relative md:flex lg:flex xl:flex 2xl:flex">
       <SideBarAuth />
@@ -139,8 +139,7 @@ const SignUp = () => {
               <button
                 type="button"
                 className="text-greatBlue absolute inset-y-0 right-0 pr-3 mb-5 flex items-center mr-3 leading-5"
-                onClick={() => onChangeInputPassword()}
-              >
+                onClick={() => onChangeInputPassword()}>
                 {isHidePassword ? (
                   <i className="fa-regular fa-eye"></i>
                 ) : (
@@ -165,8 +164,7 @@ const SignUp = () => {
               <button
                 type="button"
                 className="text-greatBlue absolute inset-y-0 right-0 pr-3 mb-5 flex items-center mr-3 leading-5"
-                onClick={() => onChangeInputRePassword()}
-              >
+                onClick={() => onChangeInputRePassword()}>
                 {isHideRePassword ? (
                   <i className="fa-regular fa-eye"></i>
                 ) : (
@@ -179,9 +177,10 @@ const SignUp = () => {
                 {formik.errors.repassword}
               </p>
             )}
-            <button 
-            type="submit"
-            className="text-white bg-greatBlue font-bold mt-5 mb-10 py-3 w-72 sm:w-80 md:w-96 lg:w-96 xl:w-96 2xl:w-96 min-h-full rounded-md">
+            <button
+              type="submit"
+              className="text-white bg-greatBlue font-bold mt-5 mb-10 py-3 w-72 sm:w-80 md:w-96 lg:w-96 xl:w-96 2xl:w-96 min-h-full rounded-md"
+              disabled={!formik.dirty || !formik.isValid}>
               Sign In
             </button>
           </form>

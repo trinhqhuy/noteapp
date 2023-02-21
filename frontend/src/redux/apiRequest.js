@@ -22,14 +22,30 @@ import {
   addNoteStart,
   addNoteSuccess,
   addNoteFailed,
+  updateNoteStart,
+  updateNoteSuccess,
+  updateNoteFailed,
+  deleteNoteStart,
+  deleteNoteSuccess,
+  deleteNoteFailed,
 } from "./noteSlide";
+
 // import { getUsersFailed, getUsersStart } from "./userSlice"
+axios.defaults.withCredentials = true;
 export const loginUser = async (user, dispatch, navigate) => {
   dispatch(loginStart());
   try {
     const res = await axios.post("http://localhost:8000/v1/auth/login", user, {
       withCredentials: true,
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+      },
     });
+    const setDay = new Date();
+    setDay.setTime(setDay.getTime() + 30 * 24 * 60 * 60 * 1000);
+    let expiresDay = "expires=" + setDay.toUTCString();
+    const refreshToken = res.data.refreshToken;
+    document.cookie = `refreshToken=${refreshToken};${expiresDay};path=/;sameSite=strict;secure`;
     dispatch(loginSuccess(res.data));
     navigate("/");
   } catch (err) {
@@ -101,5 +117,27 @@ export const readAllNote = async (accessToken, id, dispatch, axiosJWT) => {
     dispatch(readAllNotesSuccess(res.data));
   } catch (err) {
     dispatch(readAllNotesFailed(err));
+  }
+};
+export const updateNote = async (accessToken, note, dispatch, axiosJWT) => {
+  dispatch(updateNoteStart());
+  try {
+    const res = await axiosJWT.put("http://localhost:8000/v1/note/", note, {
+      headers: { token: `Bearer ${accessToken}` },
+    });
+    dispatch(updateNoteSuccess(res.data));
+  } catch (err) {
+    dispatch(updateNoteFailed(err));
+  }
+};
+export const deleteNote = async (accessToken, id, dispatch, axiosJWT) => {
+  dispatch(deleteNoteStart());
+  try {
+    const res = await axiosJWT.delete("http://localhost:8000/v1/note/" + id, {
+      headers: { token: `Bearer ${accessToken}` },
+    });
+    dispatch(deleteNoteSuccess(res.data));
+  } catch (err) {
+    dispatch(deleteNoteFailed(err));
   }
 };

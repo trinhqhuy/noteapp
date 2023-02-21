@@ -30,17 +30,18 @@ const noteController = {
   updateNote: async (req, res) => {
     try {
       const note = await Note.updateOne(
-        { _id: req.params.id }, //condition
-        { content: req.body.content } //value need to update
+        { _id: req.body._id }, //condition
+        { title: req.body.title, content: req.body.content, pin: req.body.pin } //value need to update
       );
-      return res.status(200).json(note);
+      if (!note) return res.status(401).json("Cant update your value!");
+      return res.status(200).json("Updated was successfully");
     } catch (err) {
       return res.status(500).json(err);
     }
   },
   deleteNote: async (req, res) => {
     try {
-      await Note.findByIdAndDelete({ _id: req.body.idDelete });
+      await Note.findByIdAndDelete({ _id: req.params.id });
       return res.status(200).json("Deleted was successfully");
     } catch (err) {
       return res.status(500).json(err);

@@ -1,14 +1,32 @@
+import { useState, useEffect } from "react";
+
 const Test = () => {
-    const test = document.querySelector(".testfeature")
-    const test1 = `<p>hello</p>`
-    test.innerHTML = test1
-    console.log(test)
-    return <div className="testfeature">
-    <label className=" text-black dark:text-white text-lg font-bold my-3">Password</label>
-                <input type="password" className="text-black bg-lightBlue focus-visible:outline-none py-3 px-3 mb-5 w-96 min-w-full rounded-md" />
-                <label className="text-black dark:text-white text-lg font-bold my-3">Re-Password</label>
-                <input type="password" className="text-black bg-lightBlue focus-visible:outline-none py-3 px-3 w-96 min-w-full rounded-md" />
+  const [isVisible, setIsVisible] = useState(true);
+
+  const handleOtherComponentClick = () => {
+    setTimeout(() => setIsVisible(false), 500); // delay hiding by 500ms
+  };
+
+  useEffect(() => {
+    if (!isVisible) {
+      const timerId = setTimeout(() => {
+        // do something before unmounting, e.g. call a callback function
+      }, 500); // add additional delay before unmounting by 500ms
+
+      return () => {
+        clearTimeout(timerId);
+      };
+    }
+  }, [isVisible]);
+
+  return (
+    <div
+      className={`my-component transition-opacity ${
+        isVisible ? "" : "opacity-0"
+      }`}>
+      {/* Component content */}
+      <button onClick={handleOtherComponentClick}>Click me to fade out</button>
     </div>
-}
- 
+  );
+};
 export default Test;

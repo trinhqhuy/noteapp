@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Folder = require("../models/folder");
 const Member = require("../models/member");
+const Note = require("../models/note");
 const folderController = {
   addFolder: async (req, res) => {
     try {
@@ -54,6 +55,41 @@ const folderController = {
       });
       const member = await newMember.save();
       return res.status(200).json(member);
+    } catch (err) {
+      return res.status(500).json(err);
+    }
+  },
+  updateFolder: async (req, res) => {
+    try {
+      const folder = await Folder.updateOne(
+        {
+          _id: req.params.id,
+        },
+        {
+          name: req.body.newName,
+          icon: req.body.newIcon,
+          color: req.body.newColor,
+        }
+      );
+      if (!folder) return res.status(401).json("error");
+      return res.status(200).json("Update is successfully");
+    } catch (err) {
+      return res.status(500).json(err);
+    }
+  },
+  deleteFolder: async (req, res) => {
+    // need check own the folder
+    try {
+      await Folder.deleteOne({
+        _id: req.params.id,
+      });
+      await Member.deleteOne({
+        _idFolder: req.params.id,
+      });
+      await Note.deleteMany({
+        _idFolder: req.params.id,
+      });
+      return res.status(200).json("Delete is successfully");
     } catch (err) {
       return res.status(500).json(err);
     }

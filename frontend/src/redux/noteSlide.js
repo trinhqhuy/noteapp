@@ -1,43 +1,64 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const noteSlide = createSlice({
-  name: "notes",
+  name: "note",
   initialState: {
     readAll: {
       listNote: null,
       isFetching: false,
       error: false,
     },
-    add: {
+    notes: {
       isFetching: false,
       success: false,
       error: false,
     },
-    
   },
   reducers: {
     readAllNotesStart: (state) => {
-      state.readAll.isFetching = true
+      state.readAll.isFetching = true;
     },
     readAllNotesSuccess: (state, action) => {
-      state.readAll.isFetching = false
-      state.readAll.listNote = action.payload
-
+      state.readAll.isFetching = false;
+      state.readAll.listNote = action.payload;
     },
     readAllNotesFailed: (state) => {
-      state.readAll.isFetching = false
-      state.readAll.error = true
+      state.readAll.isFetching = false;
+      state.readAll.error = true;
     },
     addNoteStart: (state) => {
-      state.add.isFetching = true
+      state.notes.isFetching = true;
     },
     addNoteSuccess: (state) => {
-      state.add.isFetching = false
-      state.add.success = true
+      state.notes.isFetching = false;
+      state.notes.success = true;
     },
     addNoteFailed: (state) => {
-      state.add.isFetching = false
-      state.add.error = true
+      state.notes.isFetching = false;
+      state.notes.error = true;
+    },
+    updateNoteStart: (state) => {
+      state.notes.isFetching = true;
+    },
+    updateNoteSuccess: (state) => {
+      state.notes.isFetching = false;
+      state.notes.success = true;
+      state.notes.error = false;
+    },
+    updateNoteFailed: (state) => {
+      state.notes.success = false;
+      state.notes.error = true;
+    },
+    deleteNoteStart: (state) => {
+      state.notes.isFetching = true;
+    },
+    deleteNoteSuccess: (state) => {
+      state.notes.isFetching = false;
+      state.notes.success = true;
+    },
+    deleteNoteFailed: (state) => {
+      state.notes.success = false;
+      state.notes.error = true;
     },
   },
 });
@@ -49,6 +70,12 @@ export const {
   addNoteStart,
   addNoteSuccess,
   addNoteFailed,
+  updateNoteStart,
+  updateNoteSuccess,
+  updateNoteFailed,
+  deleteNoteStart,
+  deleteNoteSuccess,
+  deleteNoteFailed,
 } = noteSlide.actions;
 
 export default noteSlide.reducer;
