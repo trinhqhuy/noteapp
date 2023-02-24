@@ -4,33 +4,50 @@ import FolderGroupIcon from "../components/FolderGroupIcon";
 import { Store } from "../context/GobalState";
 import { useDispatch, useSelector } from "react-redux";
 import { createAxios } from "../redux/createInstance";
+import { loginSuccess } from "../redux/authSlice";
+import { getAllFoler, updateFolder } from "../redux/apiRequest";
 
 const UpdateFolderForm = () => {
   const { state, dispatch } = useContext(Store);
-  const [isfolderName, setFolderName] = useState("");
-  const [isIcon, setIconValue] = useState("");
-  const [isColor, setColorValue] = useState("#B1FF03");
+  const [isfolderName, setFolderName] = useState(state.isFolder.name);
+  const [isIcon, setIconValue] = useState(state.isFolder.icon);
+  const [isColor, setColorValue] = useState(state.isFolder.color);
   const user = useSelector((state) => state.auth.login?.currentUser);
   const isDispatch = useDispatch();
-  // let axiosJWT = createAxios(user, isDispatch, addFolderSuccess);
+  let axiosJWT = createAxios(user, isDispatch, loginSuccess);
   // let axiosJWTReload = createAxios(user, isDispatch, loginSuccess);
 
   const handleUpdateFolder = async (e) => {
     e.preventDefault();
     if (user?.accessToken) {
-      const newFoler = {
-        name: isfolderName,
-        _idUser: user._id,
-        icon: isIcon,
-        color: isColor.toUpperCase(),
+      const newFolder = {
+        newName: isfolderName,
+        newIcon: isIcon,
+        newColor: isColor.toUpperCase(),
       };
-      // await addFolder(user?.accessToken, isDispatch, newFoler, axiosJWT);
-      // await getAllFoler(
-      //   user?.accessToken,
-      //   user?._id,
-      //   isDispatch,
-      //   axiosJWTReload
-      // );
+      await updateFolder(
+        user?.accessToken,
+        state.isFolder.id,
+        newFolder,
+        isDispatch,
+        axiosJWT
+      );
+      await getAllFoler(
+        user?.accessToken,
+        user?._id,
+        isDispatch,
+        axiosJWT
+      ).then(() =>
+        dispatch({
+          type: "isFolder",
+          payload: {
+            ...state.isFolder,
+            name: isfolderName,
+            icon: isIcon,
+            color: isColor,
+          },
+        })
+      );
       //call func theo thứ tự
     }
   };
@@ -43,20 +60,21 @@ const UpdateFolderForm = () => {
           className="w-full bg-white rounded-md p-2 mt-2 mb-3 focus-visible:outline-none caret-greatBlue"
           onChange={(e) => setFolderName(e.target.value)}
           autoFocus
+          value={isfolderName}
         />
         <label>Icon</label>
         <div className="w-full bg-white rounded-md p-2 mt-2 mb-3">
-          <FolderGroupIcon getName={setIconValue} />
+          <FolderGroupIcon getName={setIconValue} class={isIcon} />
         </div>
         <label>Color</label>
         <div className="flex flex-row w-full bg-white rounded-md p-2 mt-2 mb-3 justify-between">
           <input
             type="color"
             className="w-7 h-7 rounded-full border-white"
-            defaultValue={isColor}
+            defaultValue={state.isFolder.color}
             onChange={(e) => setColorValue(e.target.value)}
           />
-          <span className="text-greatBlue">{isColor}</span>
+          <span className="text-greatBlue">{state.isFolder.color}</span>
         </div>
       </div>
       <div className="px-4 py-3 text-right">

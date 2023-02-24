@@ -1,8 +1,9 @@
 import React from "react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Store } from "../context/GobalState";
 const RightSideBar = () => {
   const { state, dispatch } = useContext(Store);
+
   return (
     <aside
       className={`xs:w-1/3 sm:w-1/3 md:w-1/3 lg:w-1/4 xl:w-1/4 2xl:w-1/4 fixed z-40 right-0 h-screen bg-[#F0F5FE] dark:bg-gray-800 transition-all ease-in duration-200 transform-gpu ${
@@ -54,7 +55,9 @@ const RightSideBar = () => {
           </button>
         </div>
         <div className="p-3">
-          <button href="" className="text-black dark:text-white text-md">
+          <button
+            onClick={() => dispatch({ type: "isToast", payload: true })}
+            className="text-black dark:text-white text-md">
             <i className="fa-solid fa-trash text-greatRed"></i>
             <span className="pl-2">Delete folder</span>
           </button>

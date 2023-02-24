@@ -18,14 +18,17 @@ const FolderItem = ({ folderArray }) => {
   };
   const inactive = {};
   const [selected, setSelected] = useState(0);
-  const handleClickButton = async (e, divNum, id) => {
+  const handleClickButton = async (e, divNum, id, name, icon, color) => {
     e.preventDefault();
     setSelected(divNum);
     await dispatch({ type: "isRightSideBar", payload: false });
     await dispatch({ type: "isLoading" });
     await dispatch({ type: "isSideBarItem", payload: true });
     await dispatch({ type: "fade" });
-    await dispatch({ type: "idFolder", payload: { id: id } });
+    await dispatch({
+      type: "isFolder",
+      payload: { id: id, name: name, icon: icon, color: color },
+    });
     startTransition(() => {
       readAllNote(user?.accessToken, id, isDispatch, axiosJWT)
         .then(async () => {
@@ -33,7 +36,10 @@ const FolderItem = ({ folderArray }) => {
 
           await dispatch({ type: "fade" });
 
-          await dispatch({ type: "idFolder", payload: { id: id } });
+          await dispatch({
+            type: "isFolder",
+            payload: { id: id, name: name, icon: icon, color: color },
+          });
         })
         .catch(() => dispatch({ type: "fade" }));
     });
@@ -53,7 +59,9 @@ const FolderItem = ({ folderArray }) => {
         <div key={_id} className="my-3">
           <a
             className="flex items-center py-4 p-2 text-base font-normal bg-white dark:bg-gray-700 transform-gpu shadow-[2px_4px_20px_2px_#BFDBFE] dark:shadow-[2px_4px_20px_2px_#2a4582] text-gray-900 rounded-lg dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-600 m-[11px] truncate ..."
-            onClick={(e) => handleClickButton(e, idx + 1, _id)}
+            onClick={(e) =>
+              handleClickButton(e, idx + 1, _id, name, icon, color)
+            }
             style={selected == idx + 1 ? active : inactive}
             href="">
             <i

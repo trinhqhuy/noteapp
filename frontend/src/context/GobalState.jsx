@@ -12,7 +12,8 @@ const initialState = {
   isShowMoreNote: false,
   fade: true,
   setNote: null,
-  idFolder: null,
+  isFolder: null,
+  isToast: false,
 };
 
 const reducer = (state, action) => {
@@ -39,8 +40,10 @@ const reducer = (state, action) => {
       return { ...state, fade: !state.fade };
     case "setNote":
       return { ...state, setNote: action.payload };
-    case "idFolder":
-      return { ...state, idFolder: action.payload };
+    case "isFolder":
+      return { ...state, isFolder: action.payload };
+    case "isToast":
+      return { ...state, isToast: action.payload };
     default:
       throw new Error("Error 404 !");
   }

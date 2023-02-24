@@ -31,7 +31,7 @@ const NavBar = (props) => {
     }
   };
   return (
-    <div className="sticky top-0  z-50 px-2  bg-[#F0F5FE] dark:bg-gray-800 ">
+    <div className="sticky top-0  z-40 px-2  bg-[#F0F5FE] dark:bg-gray-800 ">
       <div className="container flex flex-wrap justify-between items-center mx-auto">
         <div className="">
           <NavLink onClick={handleClickReset} href="/">

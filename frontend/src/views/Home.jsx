@@ -35,7 +35,6 @@ const Home = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.login?.currentUser);
   const folderList = useSelector((state) => state.folder.getAll?.allFolder);
-
   let axiosJWT = createAxios(user, isDispatch, loginSuccess);
   useEffect(() => {
     if (!user) {
@@ -48,6 +47,13 @@ const Home = () => {
   return (
     <div className="overscroll-none">
       <Suspense>
+        {state.isToast && (
+          <Toast
+            setToast={() => dispatch({ type: "isToast", payload: false })}
+            message="Do you want to delete this folder ?"
+            isDelete={true}
+          />
+        )}
         <NavBar toValueChild={isParentValue} isClickHome={setIsParentValue} />
         <div className="relative flex">
           {state.isAddFolderModal && (

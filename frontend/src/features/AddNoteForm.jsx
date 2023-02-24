@@ -22,7 +22,7 @@ const AddNoteForm = () => {
     e.preventDefault();
     if (user?.accessToken) {
       const newNote = {
-        _idFolder: state.idFolder.id,
+        _idFolder: state.isFolder.id,
         _idUser: user?._id,
         title: isTitle,
         content: isContent,
@@ -30,7 +30,7 @@ const AddNoteForm = () => {
       await addNote(user?.accessToken, isDispatch, newNote, axiosJWT);
       await readAllNote(
         user?.accessToken,
-        state.idFolder.id,
+        state.isFolder.id,
         isDispatch,
         axiosJWT
       );

@@ -14,6 +14,8 @@ import {
   addFolderStart,
   addFolderSuccess,
   addFolderFailed,
+  updateFolderStart,
+  deleteFolderStart,
 } from "./folderSlide";
 import {
   readAllNotesStart,
@@ -134,6 +136,38 @@ export const deleteNote = async (accessToken, id, dispatch, axiosJWT) => {
   dispatch(deleteNoteStart());
   try {
     const res = await axiosJWT.delete("http://localhost:8000/v1/note/" + id, {
+      headers: { token: `Bearer ${accessToken}` },
+    });
+    dispatch(deleteNoteSuccess(res.data));
+  } catch (err) {
+    dispatch(deleteNoteFailed(err));
+  }
+};
+export const updateFolder = async (
+  accessToken,
+  id,
+  folder,
+  dispatch,
+  axiosJWT
+) => {
+  dispatch(updateFolderStart());
+  try {
+    const res = await axiosJWT.put(
+      "http://localhost:8000/v1/folder/" + id,
+      folder,
+      {
+        headers: { token: `Bearer ${accessToken}` },
+      }
+    );
+    dispatch(updateNoteSuccess(res.data));
+  } catch (err) {
+    dispatch(updateNoteFailed(err));
+  }
+};
+export const deleteFolder = async (accessToken, id, dispatch, axiosJWT) => {
+  dispatch(deleteFolderStart());
+  try {
+    const res = await axiosJWT.delete("http://localhost:8000/v1/folder/" + id, {
       headers: { token: `Bearer ${accessToken}` },
     });
     dispatch(deleteNoteSuccess(res.data));

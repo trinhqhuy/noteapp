@@ -21,7 +21,7 @@ const ShowMoreNote = (props) => {
         .then(() => {
           readAllNote(
             user?.accessToken,
-            state.idFolder.id,
+            state.isFolder.id,
             isDispatch,
             axiosJWT
           );
@@ -41,7 +41,7 @@ const ShowMoreNote = (props) => {
       .then(async () => {
         await readAllNote(
           user?.accessToken,
-          state.idFolder.id,
+          state.isFolder.id,
           isDispatch,
           axiosJWT
         );
@@ -62,7 +62,7 @@ const ShowMoreNote = (props) => {
       axiosJWT
     )
       .then(() => {
-        readAllNote(user?.accessToken, state.idFolder.id, isDispatch, axiosJWT);
+        readAllNote(user?.accessToken, state.isFolder.id, isDispatch, axiosJWT);
         dispatch({ type: "isShowMoreNote", payload: false });
       })
       .catch((err) => {
