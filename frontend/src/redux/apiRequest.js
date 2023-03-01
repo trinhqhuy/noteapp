@@ -16,6 +16,9 @@ import {
   addFolderFailed,
   updateFolderStart,
   deleteFolderStart,
+  addMemberStart,
+  addMemberSuccess,
+  addMemnberFailed,
 } from "./folderSlide";
 import {
   readAllNotesStart,
@@ -32,7 +35,7 @@ import {
   deleteNoteFailed,
 } from "./noteSlide";
 
-// import { getUsersFailed, getUsersStart } from "./userSlice"
+import { getUsersFailed, getUsersSuccess, getUsersStart } from "./userSlice";
 axios.defaults.withCredentials = true;
 export const loginUser = async (user, dispatch, navigate) => {
   dispatch(loginStart());
@@ -173,5 +176,42 @@ export const deleteFolder = async (accessToken, id, dispatch, axiosJWT) => {
     dispatch(deleteNoteSuccess(res.data));
   } catch (err) {
     dispatch(deleteNoteFailed(err));
+  }
+};
+
+export const addMemberFolder = async (
+  accessToken,
+  member,
+  dispatch,
+  axiosJWT
+) => {
+  dispatch(addMemberStart());
+  try {
+    const res = await axiosJWT.post(
+      "http://localhost:8000/v1/folder/add",
+      member,
+      {
+        headers: { token: `Bearer ${accessToken}` },
+      }
+    );
+    dispatch(addMemberSuccess(res.data));
+  } catch (err) {
+    dispatch(addMemnberFailed(err));
+  }
+};
+export const searchMember = async (accessToken, name, dispatch, axiosJWT) => {
+  dispatch(getUsersStart());
+  try {
+    const res = await axiosJWT.get(
+      "http://localhost:8000/v1/folder/search/" + name,
+      {
+        headers: { token: `Bearer ${accessToken}` },
+      }
+    );
+    dispatch(getUsersSuccess());
+    return { data: res.data, status: res.status };
+  } catch (err) {
+    dispatch(getUsersFailed());
+    return { error: err, status: err.response ? err.response.status : null };
   }
 };

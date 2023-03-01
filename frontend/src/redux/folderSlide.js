@@ -62,6 +62,17 @@ const folderSlide = createSlice({
       state.folders.success = false;
       state.folders.error = true;
     },
+    addMemberStart: (state) => {
+      state.folders.isFetching = true;
+    },
+    addMemberSuccess: (state) => {
+      state.folders.isFetching = false;
+      state.folders.success = true;
+    },
+    addMemnberFailed: (state) => {
+      state.folders.success = false;
+      state.folders.error = true;
+    },
   },
 });
 export const {
@@ -77,5 +88,8 @@ export const {
   deleteFolderStart,
   deleteFolderSuccess,
   deleteFolderFailed,
+  addMemberStart,
+  addMemberSuccess,
+  addMemnberFailed,
 } = folderSlide.actions;
 export default folderSlide.reducer;

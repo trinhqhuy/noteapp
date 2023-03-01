@@ -26,6 +26,8 @@ const RightSideBar = lazy(() => import("../components/RightSideBar"));
 const Modal = lazy(() => import("../components/Modal"));
 const ShowMoreNote = lazy(() => import("../features/ShowMoreNote"));
 const UpdateFolderForm = lazy(() => import("../features/UpdateFolderForm"));
+import AddMemberForm from "../features/AddMemberForm";
+import Fade from "../components/Fade";
 const Toast = lazy(() => import("../components/Toast"));
 const Home = () => {
   // const isShowModal = useContext(ButtonContext);
@@ -56,6 +58,11 @@ const Home = () => {
         )}
         <NavBar toValueChild={isParentValue} isClickHome={setIsParentValue} />
         <div className="relative flex">
+          {state.isSearchMember && (
+            <Modal title="Search member" enableEdit={false}>
+              <AddMemberForm />
+            </Modal>
+          )}
           {state.isAddFolderModal && (
             <Modal title="Add folder" enableEdit={false}>
               <AddFolerForm />

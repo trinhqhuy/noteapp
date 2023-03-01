@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const Folder = require("../models/folder");
 const Member = require("../models/member");
 const Note = require("../models/note");
+const User = require("../models/user");
+
 const folderController = {
   addFolder: async (req, res) => {
     try {
@@ -27,7 +29,6 @@ const folderController = {
   getAllFolder: async (req, res) => {
     try {
       const folder = await Folder.find({ _idUser: req.params.id });
-
       if (!folder) {
         return res.status(500).json("Can't find this folder");
       }
@@ -45,6 +46,19 @@ const folderController = {
   //         return res.status(500).json(err)
   //     }
   // },
+  searchMemberFolder: async (req, res) => {
+    try {
+      const member = await User.findOne({ username: req.params.name });
+      if (!member) {
+        return res.status(400).json("Cant find this user!");
+      }
+
+      const { password, ...others } = member._doc;
+      return res.status(200).json({ ...others });
+    } catch (err) {
+      return res.status(500).json(err);
+    }
+  },
   addMemberFolder: async (req, res) => {
     try {
       const newMember = new Member({

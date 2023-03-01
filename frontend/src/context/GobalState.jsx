@@ -14,6 +14,9 @@ const initialState = {
   setNote: null,
   isFolder: null,
   isToast: false,
+  isSearchMember: false,
+  isSearchedMember: null,
+  resSearch: null,
 };
 
 const reducer = (state, action) => {
@@ -44,6 +47,12 @@ const reducer = (state, action) => {
       return { ...state, isFolder: action.payload };
     case "isToast":
       return { ...state, isToast: action.payload };
+    case "isSearchMember":
+      return { ...state, isSearchMember: action.payload };
+    case "isSearchedMember":
+      return { ...state, isSearchedMember: action.payload };
+    case "resSearch":
+      return { ...state, resSearch: action.payload };
     default:
       throw new Error("Error 404 !");
   }

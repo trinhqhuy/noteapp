@@ -8,7 +8,17 @@ router.get(
   middlewareController.verifyToken,
   folderController.getAllFolder
 );
+router.get(
+  "/search/:name",
+  middlewareController.verifyToken,
+  folderController.searchMemberFolder
+);
 router.post("/", middlewareController.verifyToken, folderController.addFolder);
+router.post(
+  "/add",
+  middlewareController.verifyToken,
+  folderController.addMemberFolder
+);
 router.put(
   "/:id",
   middlewareController.verifyToken,

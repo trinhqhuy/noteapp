@@ -27,10 +27,14 @@ const RightSideBar = () => {
           </span>
         </div>
         <div className="m-3">
-          <i className="fa-solid fa-gear text-black dark:text-white"></i>
-          <span className="text-black dark:text-white text-md ml-3">
-            Manager member
-          </span>
+          <button
+            onClick={() => dispatch({ type: "isSearchMember", payload: true })}
+            className="">
+            <i className="fa-solid fa-gear text-black dark:text-white"></i>
+            <span className="text-black dark:text-white text-md ml-3">
+              Manager member
+            </span>
+          </button>
         </div>
       </div>
       <div className="grid w-54 h-38 content-center m-3 bg-white dark:bg-slate-600  rounded-md shadow-[2px_4px_20px_2px_#BFDBFE] dark:shadow-[2px_4px_20px_2px_#2a4582]">

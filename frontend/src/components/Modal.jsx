@@ -23,7 +23,7 @@ const Modal = (props) => {
         .then(() => {
           readAllNote(
             user?.accessToken,
-            state.idFolder.id,
+            state.isFolder.id,
             isDispatch,
             axiosJWT
           );
@@ -46,6 +46,9 @@ const Modal = (props) => {
               dispatch({ type: "isAddNoteModal", payload: false });
               dispatch({ type: "isShowMoreNote", payload: false });
               dispatch({ type: "isUpdateFolderModal", payload: false });
+              dispatch({ type: "isSearchMember", payload: false });
+              dispatch({ type: "isSearchedMember", payload: null });
+              dispatch({ type: "resSearch", payload: null });
             }}
           />
           {

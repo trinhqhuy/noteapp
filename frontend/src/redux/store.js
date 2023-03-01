@@ -1,6 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import authReducer from "./authSlice";
-// import userReducer from "./userSlice"
+import userReducer from "./userSlice";
 import folderReducer from "./folderSlide";
 import noteReducer from "./noteSlide";
 import {
@@ -16,7 +16,7 @@ import {
 import storage from "redux-persist/lib/storage";
 const rootReducer = combineReducers({
   auth: authReducer,
-  // users: userReducer,
+  user: userReducer,
   folder: folderReducer,
   notes: noteReducer,
 });
