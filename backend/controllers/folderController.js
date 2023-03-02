@@ -17,6 +17,7 @@ const folderController = {
       const theOwner = new Member({
         _idUser: req.body._idUser,
         _idFolder: folder._id.valueOf(),
+        isIntive: false,
         isActive: true,
         isSeenNoti: true,
       });
@@ -52,9 +53,12 @@ const folderController = {
       if (!member) {
         return res.status(400).json("Cant find this user!");
       }
-
+      const isIntive = await Member.findOne({ _idUser: member._id });
       const { password, ...others } = member._doc;
-      return res.status(200).json({ ...others });
+      if (!isIntive) {
+        return res.status(200).json({ ...others });
+      }
+      return res.status(200).json({ ...others, intive: isIntive });
     } catch (err) {
       return res.status(500).json(err);
     }
@@ -64,11 +68,12 @@ const folderController = {
       const newMember = new Member({
         _idUser: req.body.idUser,
         _idFolder: req.body.idFolder,
+        isIntive: req.body.isIntive,
         isActive: req.body.isActive,
         isSeenNoti: req.body.isSeen,
       });
-      const member = await newMember.save();
-      return res.status(200).json(member);
+      await newMember.save();
+      return res.status(200).json("Add member was successfully");
     } catch (err) {
       return res.status(500).json(err);
     }

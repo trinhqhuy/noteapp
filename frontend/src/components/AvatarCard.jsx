@@ -1,10 +1,27 @@
 import React from "react";
-
 import imageArr from "../assets/avatar/index";
-function AvatarCard({ id, name, avatar }) {
+import { createAxios } from "../redux/createInstance";
+import { addMemberFolder } from "../redux/apiRequest";
+import { loginSuccess } from "../redux/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { Store } from "../context/GobalState";
+import { useContext } from "react";
+function AvatarCard({ id, idFolder, name, avatar, isIntived }) {
+  const { state, dispatch } = useContext(Store);
+  const user = useSelector((state) => state.auth.login?.currentUser);
+  const isDispatch = useDispatch();
+  let axiosJWT = createAxios(user, isDispatch, loginSuccess);
   const handleAdd = () => {
-    console.log(id);
+    const newMember = {
+      idUser: id,
+      idFolder: idFolder,
+      isIntive: true,
+      isActive: false,
+      isSeen: false,
+    };
+    addMemberFolder(user?.accessToken, newMember, isDispatch, axiosJWT);
   };
+  const value = isIntived === true ? "Intived" : "Intive";
   return (
     <div className="flex flex-row m-2 p-2 justify-between items-center">
       <div className="flex flex-row items-center">
@@ -13,9 +30,10 @@ function AvatarCard({ id, name, avatar }) {
       </div>
       <button
         type="button"
+        disabled={isIntived}
         onClick={handleAdd}
-        className="w-12 h-7 bg-greatBlue rounded-md text-white">
-        Intive
+        className="w-14 h-7 bg-greatBlue rounded-md text-white">
+        {value}
       </button>
     </div>
   );

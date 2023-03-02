@@ -31,11 +31,23 @@ function AddMemberForm(props) {
     <form className="p-5">
       <SearchBar isSearch={searchMember} />
       {state.isSearchedMember != null ? (
-        <AvatarCard
-          id={state.isSearchedMember._id}
-          name={state.isSearchedMember.username}
-          avatar={state.isSearchedMember.avatar}
-        />
+        state.isSearchedMember.intive == null ? (
+          <AvatarCard
+            id={state.isSearchedMember._id}
+            name={state.isSearchedMember.username}
+            idFolder={state.isFolder.id}
+            avatar={state.isSearchedMember.avatar}
+            isIntived={false}
+          />
+        ) : (
+          <AvatarCard
+            id={state.isSearchedMember._id}
+            name={state.isSearchedMember.username}
+            idFolder={state.isFolder.id}
+            avatar={state.isSearchedMember.avatar}
+            isIntived={true}
+          />
+        )
       ) : (
         state.resSearch === 400 && (
           <ErrorMessage title="Can't found this user" />

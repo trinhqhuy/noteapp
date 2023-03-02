@@ -8,7 +8,6 @@ import { Store } from "../context/GobalState";
 
 const SearchBar = (props) => {
   const { state, dispatch } = useContext(Store);
-
   const user = useSelector((state) => state.auth.login?.currentUser);
   const [isName, setName] = useState("");
   const isDispatch = useDispatch();
@@ -36,6 +35,7 @@ const SearchBar = (props) => {
       <input
         type="search"
         id="search"
+        autoComplete="off"
         value={isName}
         onChange={(e) => {
           setName(e.target.value);
