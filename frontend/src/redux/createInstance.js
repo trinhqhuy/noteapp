@@ -8,11 +8,6 @@ const instance = axios.create({
 const refreshToken = async () => {
   try {
     const res = await instance.post("/v1/auth/refresh/", "abc");
-    const setDay = new Date();
-    setDay.setTime(setDay.getTime() + 30 * 24 * 60 * 60 * 1000);
-    let expiresDay = "expires=" + setDay.toUTCString();
-    const refreshToken = res.data.refreshToken;
-    document.cookie = `refreshToken=${refreshToken};${expiresDay};path=/;sameSite=strict;secure`;
     return res.data;
   } catch (err) {
     console.log(err.response.data);
@@ -25,7 +20,7 @@ export const createAxios = (user, dispatch, stateSuccess) => {
     async (config) => {
       let date = new Date();
       const decodedToken = jwtdecode(user?.accessToken);
-      // console.log(date.getTime() /1000);
+      // console.log(date.getTime() / 1000);
       // console.log(decodedToken);
       if (decodedToken.exp < date.getTime() / 1000) {
         const data = await refreshToken();

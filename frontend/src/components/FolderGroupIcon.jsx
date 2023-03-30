@@ -19,7 +19,7 @@ const FolderGroupItem = (props) => {
   };
   return (
     <>
-      <div className="scrollbar-hidden px-[15vw] w-full flex snap-x overflow-x-auto self-center">
+      <div className="scrollbar-hidden px-[15vw] sm:px-[15vw] md:px-[15vw] lg:px-[15vw] xl:px-[14vw] 2xl:px-[14vw]  w-full flex snap-x overflow-x-auto self-center z-30">
         {iconArray.map(({ name }) => (
           <div key={`11${name}`}>
             <input

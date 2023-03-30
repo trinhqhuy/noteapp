@@ -9,6 +9,7 @@ import AvatarCard from "../components/AvatarCard";
 import { createAxios } from "../redux/createInstance";
 import { loginSuccess } from "../redux/authSlice";
 import ErrorMessage from "../components/ErrorMessage";
+import ManagerMember from "../features/ManagerMember";
 function AddMemberForm(props) {
   const { state, dispatch } = useContext(Store);
   const user = useSelector((state) => state.auth.login?.currentUser);
@@ -30,6 +31,7 @@ function AddMemberForm(props) {
   return (
     <form className="p-5">
       <SearchBar isSearch={searchMember} />
+      <ManagerMember />
       {state.isSearchedMember != null ? (
         state.isSearchedMember.intive == null ? (
           <AvatarCard
@@ -53,14 +55,6 @@ function AddMemberForm(props) {
           <ErrorMessage title="Can't found this user" />
         )
       )}
-      {/* {searchedUser.user ? (
-        <AvatarCard
-          name={searchedUser.user.username}
-          avatar={searchedUser.user.avatar}
-        />
-      ) : (
-        <p>{message}</p>
-      )} */}
     </form>
   );
 }

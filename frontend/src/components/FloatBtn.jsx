@@ -6,8 +6,8 @@ function FloatBtn() {
   return (
     <button
       onClick={() => dispatch({ type: "isAddNoteModal", payload: true })}
-      className="group fixed w-[70px] h-[70px] bottom-5 right-5 inline-block bg-greatBlue/70 backdrop-blur-xl rounded-full">
-      <i className="fa-solid fa-plus text-white w-5 h-5"></i>
+      className="group fixed w-[70px] h-[70px] bottom-5 right-5 inline-block bg-greatBlue/70 backdrop-blur-xl rounded-full shadow-[5px_5px_35px_2px_#6491fc]">
+      <i className="fa-solid fa-plus text-white w-5 h-5 "></i>
       <span className="group-hover:flex group-hover:w-[90px] justify-center hidden group-hover:absolute group-hover:bottom-[100%] group-hover:right-[50%] group-hover:bg-white group-hover:p-2 rounded-full text-black dark:group-hover:text-white dark:group-hover:bg-gray-400">
         Add note
       </span>

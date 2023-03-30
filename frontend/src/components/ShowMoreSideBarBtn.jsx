@@ -7,7 +7,7 @@ function ShowMoreSideBarBtn() {
 
   return (
     <button
-      className="w-10 h-10"
+      className="w-10 h-10 hover:bg-lightBlue hover:rounded-full focus:bg-lightBlue focus:rounded-full"
       onClick={() =>
         dispatch({ type: "isRightSideBar", payload: !state.isRightSideBar })
       }>

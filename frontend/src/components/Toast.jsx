@@ -5,7 +5,7 @@ import { createAxios } from "../redux/createInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { loginSuccess } from "../redux/authSlice";
 import { useContext } from "react";
-import { getAllFoler } from "../redux/apiRequest";
+import { getAllFolder } from "../redux/apiRequest";
 import { Store } from "../context/GobalState";
 function Toast({ setToast, message, isDelete }) {
   const { state, dispatch } = useContext(Store);
@@ -22,8 +22,8 @@ function Toast({ setToast, message, isDelete }) {
       dispatch({ type: "isRightSideBar", payload: false });
       dispatch({ type: "isSideBarItem", payload: false });
       dispatch({ type: "isReset" });
-      getAllFoler(user?.accessToken, user?._id, isDispatch, axiosJWT).then(() =>
-        setToast(false)
+      getAllFolder(user?.accessToken, user?._id, isDispatch, axiosJWT).then(
+        () => setToast(false)
       );
     });
   };

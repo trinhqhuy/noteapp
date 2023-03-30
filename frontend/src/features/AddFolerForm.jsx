@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createAxios } from "../redux/createInstance";
 import { addFolderSuccess } from "../redux/folderSlide";
 import { loginSuccess } from "../redux/authSlice";
-import { getAllFoler } from "../redux/apiRequest";
+import { getAllFolder } from "../redux/apiRequest";
 import { Store } from "../context/GobalState";
 import { useContext } from "react";
 
@@ -31,7 +31,7 @@ const AddFolerForm = (props) => {
         color: isColor.toUpperCase(),
       };
       await addFolder(user?.accessToken, isDispatch, newFoler, axiosJWT);
-      await getAllFoler(user?.accessToken, user?._id, isDispatch, axiosJWT);
+      await getAllFolder(user?.accessToken, user?._id, isDispatch, axiosJWT);
       //call func theo thứ tự
     }
   };
@@ -46,7 +46,7 @@ const AddFolerForm = (props) => {
           autoFocus
         />
         <label>Icon</label>
-        <div className="w-full bg-white rounded-md p-2 mt-2 mb-3">
+        <div className="w-full bg-white rounded-md p-2 sm:p-2 md:p-2 lg:p-3 xl:p-5 2xl:p-7  mt-2 mb-3">
           <FolderGroupIcon getName={setIconValue} />
         </div>
         <label>Color</label>

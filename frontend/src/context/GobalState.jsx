@@ -4,12 +4,15 @@ const initialState = {
   isHamberger: false,
   isAddFolderModal: false,
   isUpdateFolderModal: false,
+  isShowEditProfile: false,
   isAddNoteModal: false,
   isLoading: false,
   isSideBarItem: false,
   isRightSideBar: false,
   isReset: false,
   isShowMoreNote: false,
+  isPopOversNotificaton: false,
+  isPopOversAccount: false,
   fade: true,
   setNote: null,
   isFolder: null,
@@ -27,6 +30,8 @@ const reducer = (state, action) => {
       return { ...state, isAddFolderModal: action.payload };
     case "isUpdateFolderModal":
       return { ...state, isUpdateFolderModal: action.payload };
+    case "isShowEditProfile":
+      return { ...state, isShowEditProfile: action.payload };
     case "isAddNoteModal":
       return { ...state, isAddNoteModal: action.payload };
     case "isLoading":
@@ -37,6 +42,10 @@ const reducer = (state, action) => {
       return { ...state, isRightSideBar: action.payload };
     case "isShowMoreNote":
       return { ...state, isShowMoreNote: action.payload };
+    case "isPopOversNotificaton":
+      return { ...state, isPopOversNotificaton: action.payload };
+    case "isPopOversAccount":
+      return { ...state, isPopOversAccount: action.payload };
     case "isReset":
       return { ...state, isReset: !state.isReset };
     case "fade":

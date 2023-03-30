@@ -1,8 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+* {
+  -webkit-tap-highlight-color: transparent;
+}
 @layer components {
+  @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
   /* Hide scrollbar for Safari */
   .scrollbar-hidden::-webkit-scrollbar {
     display: none;
@@ -13,6 +16,22 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
+}
+.circle {
+  background: linear-gradient(
+    134.23deg,
+    #1c684a 27.05%,
+    #b1ff03 45.2%,
+    #1f1cf1 73.44%
+  );
+}
+.loader {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.loader--fade-in {
+  opacity: 1;
 }
 
 /* 

@@ -3,11 +3,15 @@ const mongoose = require("mongoose");
 const memberSchema = new mongoose.Schema(
   {
     _idUser: {
-      type: String,
+      type: mongoose.Types.ObjectId,
       require: true,
     },
     _idFolder: {
       type: String,
+      require: true,
+    },
+    isAdmin: {
+      type: Boolean,
       require: true,
     },
     isIntive: {

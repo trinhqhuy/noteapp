@@ -41,19 +41,55 @@ const authController = {
         isAdmin: user.isAdmin,
       },
       process.env.JWT_REFRESH_KEY,
-      { expiresIn: "30d" }
+      { expiresIn: "100d" }
     );
   },
-  generateToken: async (refreshToken) => {
+  saveRefreshToken: async (token) => {
+    const newRefreshToken = new refreshTokens({
+      token,
+    });
+
     try {
-      const createRefreshTokens = new refreshTokens({
-        token: refreshToken,
-      });
-      await createRefreshTokens.save();
+      const savedToken = await newRefreshToken.save();
+      return savedToken;
     } catch (err) {
-      console.log(err);
+      console.error(err);
+      throw new Error("Could not save refresh token to database");
     }
   },
+  findRefreshToken: async (token) => {
+    try {
+      const refreshToken = await refreshTokens.findOne({ token });
+      return refreshToken;
+    } catch (err) {
+      console.error(err);
+      throw new Error("Could not find refresh token in database");
+    }
+  },
+  // Update refresh token in database
+  updateRefreshToken: async (oldToken, newToken) => {
+    try {
+      const refreshToken = await refreshTokens.findOneAndUpdate(
+        { token: oldToken },
+        { token: newToken }
+      );
+      return refreshToken;
+    } catch (err) {
+      console.error(err);
+      throw new Error("Could not update refresh token in database");
+    }
+  },
+  // generateToken: async (refreshToken) => {
+  //   try {
+  //     const createRefreshTokens = new refreshTokens({
+  //       token: refreshToken,
+  //     });
+  //     const token = await createRefreshTokens.save();
+  //     return token;
+  //   } catch (err) {
+  //     return err;
+  //   }
+  // },
 
   loginUser: async (req, res) => {
     try {
@@ -69,80 +105,113 @@ const authController = {
         res.status(404).json("Wrong password");
       }
       if (user && validPassword) {
-        const accessToken = authController.generateAccessToken(user);
-        const refreshToken = authController.generateRefreshToken(user);
-        const setDay = new Date();
-        setDay.setTime(setDay.getTime() + 30 * 24 * 60 * 60 * 1000);
-        await authController.generateToken(refreshToken);
-        // refreshTokens.push(refreshToken);
-        const { password, ...others } = user._doc;
-        res.header("Access-Control-Allow-Origin");
-        res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-        res.header("Access-Control-Allow-Header");
-        res.header("Content-Type", "application/json; charset=UTF-8");
-        res.cookie("refreshToken", refreshToken, {
-          httpOnly: true,
-          secure: true,
-          path: "/",
-          sameSite: "strict",
-          expires: setDay,
-        });
-        return res.status(200).json({ ...others, accessToken, refreshToken }); // luu cookie o phia frontend
+        const accessToken = await authController.generateAccessToken(user);
+        const refreshToken = await authController.generateRefreshToken(user);
+        // const token = await authController.generateToken(refreshToken);
+        // const createRefreshTokens = new refreshTokens({
+        //   token: refreshToken,
+        // });
+        // const token = await createRefreshTokens.save();
+        const savedToken = await authController.saveRefreshToken(refreshToken);
+        if (savedToken) {
+          const setDay = new Date();
+          setDay.setTime(setDay.getTime() + 100 * 24 * 60 * 60 * 1000);
+          // refreshTokens.push(refreshToken);
+          const { password, ...others } = user._doc;
+          res.header("Access-Control-Allow-Origin");
+          res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+          res.header("Access-Control-Allow-Header");
+          res.header("Content-Type", "application/json; charset=UTF-8");
+          res.cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            secure: true,
+            path: "/",
+            sameSite: "Strict",
+            expires: setDay,
+          });
+          return res.status(200).json({ ...others, accessToken, refreshToken }); // luu cookie o phia frontend
+        } else {
+          return res.status(500).json("Can't login please try later !");
+        }
       }
     } catch (err) {
       res.status(500).json(err);
     }
   },
   logoutUser: async (req, res) => {
-    res.clearCookie("refreshToken");
-    refreshTokens = refreshTokens.filter(
-      (token) => token !== req.cookies.refreshToken
-    );
-    return res.status(200).json("Logout successfully!");
+    try {
+      res.clearCookie("refreshToken");
+      const validToken = await refreshTokens.deleteOne({
+        token: req.cookies.refreshToken,
+      });
+      return res.status(200).json("Logout successfully!");
+    } catch (err) {
+      return res.status(500).json(err);
+    }
   },
 
   requestRefreshToken: async (req, res) => {
     //Take refresh token from user
-    const refreshToken = req.cookies.refreshToken;
-    //Send error if token is not valid
-    if (!refreshToken) return res.status(401).json("You're not authenticated");
-    // if (!refreshTokens.includes(refreshToken)) {
-    //   return res.status(403).json("Refresh token is not valid");
-    // }
-    const validToken = await refreshTokens.findOne({ token: refreshToken });
-    if (!validToken?.token)
-      return res.status(403).json("Refresh token is not valid");
-    jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY, async (err, user) => {
-      if (err) {
-        console.log(err);
-      }
-      //   refreshTokens = refreshTokens.filter((token) => token !== refreshToken);
+    try {
+      const refreshToken = req.cookies.refreshToken;
+      //Send error if token is not valid
+      if (!refreshToken)
+        return res.status(401).json("You're not authenticated");
+      // if (!refreshTokens.includes(refreshToken)) {
+      //   return res.status(403).json("Refresh token is not valid");
+      // }
+      const validToken = await refreshTokens.findOne({ token: refreshToken });
+      if (!validToken)
+        return res.status(403).json("Refresh token is not valid");
+      jwt.verify(
+        refreshToken,
+        process.env.JWT_REFRESH_KEY,
+        async (err, user) => {
+          if (err) {
+            console.log(err);
+          }
+          //   refreshTokens = refreshTokens.filter((token) => token !== refreshToken);
 
-      //create new access token, refresh token and send to user
-      const newAccessToken = authController.generateAccessToken(user);
-      const newRefreshToken = authController.generateRefreshToken(user);
-      const setDay = new Date();
-      setDay.setTime(setDay.getTime() + 30 * 24 * 60 * 60 * 1000);
-      await refreshTokens.updateOne(
-        { token: validToken?.token },
-        { token: newRefreshToken }
+          //create new access token, refresh token and send to user
+          const newAccessToken = await authController.generateAccessToken(user);
+          const newRefreshToken = await authController.generateRefreshToken(
+            user
+          );
+          const updatedRefreshToken = await refreshTokens.findOneAndUpdate(
+            { token: refreshToken },
+            { token: newRefreshToken },
+            { new: true }
+          );
+          if (!updatedRefreshToken) {
+            return res.status(500).json("Failed to update refresh token");
+          }
+          // const newToken = await validToken.updateOne({
+          //   token: newRefreshToken,
+          // });
+          if (updatedRefreshToken) {
+            const setDay = new Date();
+            setDay.setTime(setDay.getTime() + 100 * 24 * 60 * 60 * 1000);
+            res.header("Access-Control-Allow-Origin");
+            res.header(
+              "Access-Control-Allow-Methods",
+              "GET, POST, PUT, DELETE"
+            );
+            res.header("Access-Control-Allow-Header");
+            res.header("Content-Type", "application/json; charset=UTF-8");
+            res.cookie("refreshToken", newRefreshToken, {
+              httpOnly: true,
+              secure: true,
+              path: "/",
+              sameSite: "Strict",
+              expires: setDay,
+            });
+            return res.status(200).json({ accessToken: newAccessToken });
+          }
+        }
       );
-      res.header("Access-Control-Allow-Origin");
-      res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-      res.header("Access-Control-Allow-Header");
-      res.header("Content-Type", "application/json; charset=UTF-8");
-      res.cookie("refreshToken", newRefreshToken, {
-        httpOnly: true,
-        secure: true,
-        path: "/",
-        sameSite: "strict",
-        expires: setDay,
-      });
-      return res.status(200).json({
-        accessToken: newAccessToken,
-        // refreshToken: newRefreshToken,
-      });
-    });
+    } catch (err) {
+      return res.status(500).json(err);
+    }
   },
   // requestRefreshToken: async(req, res) => {
   //     const refreshToken = req.cookies.refreshToken

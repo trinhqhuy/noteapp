@@ -45,7 +45,7 @@ const SideBar = (props) => {
           </a>
         </div>
         <div className="scroll-smooth ">
-          <div className="max-h-[calc(100vh_-_10rem)] scrollbar-hidden overflow-y-auto scroll-smooth py-5">
+          <div className="min-h-[calc(100vh_-_9.8rem)] max-h-[calc(100vh_-_9.8rem)] scrollbar-hidden overflow-y-auto scroll-smooth py-5">
             <FolderItem
               sendToParent={handleClick}
               folderArray={props?.sendFolderList}

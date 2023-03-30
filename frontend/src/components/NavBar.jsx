@@ -7,14 +7,13 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { loginSuccess } from "../redux/authSlice";
 import { createAxios } from "../redux/createInstance";
-import { getAllFoler } from "../redux/apiRequest";
+import { getAllFolder, getNotification } from "../redux/apiRequest";
 import ShowMoreSideBarBtn from "./ShowMoreSideBarBtn";
 import Profile from "./Profile";
 import { Store } from "../context/GobalState";
-const NavBar = (props) => {
+import { updateNotification } from "../redux/apiRequest";
+const NavBar = ({ notification }) => {
   const user = useSelector((state) => state.auth.login?.currentUser);
-  // const isClickBtn = useContext(ButtonContext);
-
   const { state, dispatch } = useContext(Store);
   const isDispatch = useDispatch();
   const navigate = useNavigate();
@@ -27,11 +26,27 @@ const NavBar = (props) => {
       dispatch({ type: "isRightSideBar", payload: false });
       dispatch({ type: "isSideBarItem", payload: false });
       dispatch({ type: "isReset" });
-      await getAllFoler(user?.accessToken, user?._id, isDispatch, axiosJWT);
+      await getAllFolder(user?.accessToken, user?._id, isDispatch, axiosJWT);
     }
   };
+
+  const seenNotification = async () => {
+    const isState = {
+      idUser: user?._id,
+      isNoti: true,
+      isSeenNoti: true,
+    };
+    await updateNotification(user?.accessToken, isState, isDispatch, axiosJWT);
+    await getNotification(user?.accessToken, user?._id, isDispatch, axiosJWT);
+  };
+  const notiCount = notification?.length - 1;
+  const notifi = notification[notiCount]?.notiLength > 0 && (
+    <div className="relative z-10 left-[12px] bottom-[1.8rem] flex flex-row justify-center items-center w-5 h-5 bg-greatRed rounded-full text-white font-medium shadow-[1px_1px_15px_1px_#FF5365]">
+      <span>{notification[notiCount]?.notiLength}</span>
+    </div>
+  );
   return (
-    <div className="sticky top-0  z-40 px-2  bg-[#F0F5FE] dark:bg-gray-800 ">
+    <div className="sticky top-0 z-40 px-2  bg-[#F0F5FE] dark:bg-gray-800 ">
       <div className="container flex flex-wrap justify-between items-center mx-auto">
         <div className="">
           <NavLink onClick={handleClickReset} href="/">
@@ -49,7 +64,7 @@ const NavBar = (props) => {
           </NavLink>
 
           <button
-            className="block  md:hidden lg:hidden xl:hidden 2xl:hidden w-16"
+            className="block md:hidden lg:hidden xl:hidden 2xl:hidden w-10 h-10 hover:bg-lightBlue hover:rounded-full focus:bg-lightBlue focus:rounded-full "
             onClick={() => dispatch({ type: "isHamberger" })}>
             <i className="fa-solid fa-bars text-black dark:text-white"></i>
           </button>
@@ -69,14 +84,27 @@ const NavBar = (props) => {
           //search bar
         }
         <div className="hidden w-full md:block md:w-auto" id="navbar-default">
-          {props.toValueChild == 0 ? <></> : <SearchBar />}
+          {/* {toValueChild == 0 ? <></> : <SearchBar />} */}
         </div>
         {
           //profile btn
         }
-        <div className="flex items-center">
-          <Profile sendName={user?.username} />
-
+        <div className="flex items-center ">
+          <button
+            className=" w-10 h-10 hover:bg-lightBlue hover:rounded-full focus:bg-lightBlue focus:rounded-full "
+            onClick={async () => {
+              await seenNotification();
+              await dispatch({
+                type: "isPopOversNotificaton",
+                payload: !state.isPopOversNotificaton,
+              });
+            }}>
+            <div className="py-1 px-2">
+              <i className="fa-regular fa-bell text-black dark:text-white text-lg "></i>
+              {notifi}
+            </div>
+          </button>
+          <Profile avatar={user?.avatar} username={user?.username} />
           {state.isSideBarItem ? <ShowMoreSideBarBtn /> : <></>}
         </div>
       </div>

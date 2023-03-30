@@ -17,7 +17,8 @@ const folderController = {
       const theOwner = new Member({
         _idUser: req.body._idUser,
         _idFolder: folder._id.valueOf(),
-        isIntive: false,
+        isAdmin: true,
+        isIntive: true,
         isActive: true,
         isSeenNoti: true,
       });
@@ -29,11 +30,44 @@ const folderController = {
   },
   getAllFolder: async (req, res) => {
     try {
-      const folder = await Folder.find({ _idUser: req.params.id });
-      if (!folder) {
+      // const folder = await Folder.find({ _idUser: req.params.id });
+      const folder = await Member.aggregate([
+        {
+          $match: {
+            _idUser: mongoose.Types.ObjectId(`${req.params.id}`),
+            isIntive: true,
+            isActive: true,
+            isSeenNoti: true,
+          },
+        },
+        {
+          $lookup: {
+            from: "folders",
+            let: { idFolder: { $toObjectId: "$_idFolder" } },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $eq: ["$_id", "$$idFolder"],
+                  },
+                },
+              },
+              {
+                $sort: {
+                  createdAt: -1, // Sort by createdAt field in descending order
+                },
+              },
+            ],
+            as: "folder",
+          },
+        },
+      ]);
+      const foldersArr = folder.map((m) => m.folder[0]);
+
+      if (!foldersArr) {
         return res.status(500).json("Can't find this folder");
       }
-      return res.status(200).json(folder);
+      return res.status(200).json(foldersArr);
     } catch (err) {
       return res.status(500).json(err);
     }
@@ -47,27 +81,13 @@ const folderController = {
   //         return res.status(500).json(err)
   //     }
   // },
-  searchMemberFolder: async (req, res) => {
-    try {
-      const member = await User.findOne({ username: req.params.name });
-      if (!member) {
-        return res.status(400).json("Cant find this user!");
-      }
-      const isIntive = await Member.findOne({ _idUser: member._id });
-      const { password, ...others } = member._doc;
-      if (!isIntive) {
-        return res.status(200).json({ ...others });
-      }
-      return res.status(200).json({ ...others, intive: isIntive });
-    } catch (err) {
-      return res.status(500).json(err);
-    }
-  },
+
   addMemberFolder: async (req, res) => {
     try {
       const newMember = new Member({
         _idUser: req.body.idUser,
         _idFolder: req.body.idFolder,
+        isAdmin: false,
         isIntive: req.body.isIntive,
         isActive: req.body.isActive,
         isSeenNoti: req.body.isSeen,
@@ -102,7 +122,7 @@ const folderController = {
       await Folder.deleteOne({
         _id: req.params.id,
       });
-      await Member.deleteOne({
+      await Member.deleteMany({
         _idFolder: req.params.id,
       });
       await Note.deleteMany({

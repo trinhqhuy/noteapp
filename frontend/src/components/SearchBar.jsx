@@ -14,8 +14,12 @@ const SearchBar = (props) => {
   let axiosJWT = createAxios(user, isDispatch, loginSuccess);
   useEffect(() => {
     if (isName != "") {
+      const userSearch = {
+        name: isName,
+        _idFolder: state.isFolder.id,
+      };
       const timer = setTimeout(() => {
-        searchMember(user?.accessToken, isName, isDispatch, axiosJWT)
+        searchMember(user?.accessToken, userSearch, isDispatch, axiosJWT)
           .then((data) => {
             dispatch({ type: "isSearchedMember", payload: data.data });
             dispatch({ type: "resSearch", payload: data.status });
@@ -41,8 +45,7 @@ const SearchBar = (props) => {
           setName(e.target.value);
         }}
         className="block p-3 pl-16 w-full text-sm text-white bg-[#BFDBFE] rounded-lg placeholder-white dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-700 dark:text-white shadow-[2px_4px_20px_2px_#BFDBFE] dark:shadow-[2px_4px_20px_2px_#2a4582] focus-visible:outline-none"
-        placeholder="Search"
-        required=""
+        placeholder="Add member"
       />
     </div>
   );

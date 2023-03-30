@@ -49,6 +49,10 @@ const Modal = (props) => {
               dispatch({ type: "isSearchMember", payload: false });
               dispatch({ type: "isSearchedMember", payload: null });
               dispatch({ type: "resSearch", payload: null });
+              dispatch({
+                type: "isShowEditProfile",
+                payload: false,
+              });
             }}
           />
           {
@@ -57,8 +61,8 @@ const Modal = (props) => {
         </div>
         <span className="inline-block align-middle h-full md:h-screen lg:h-screen xl:h-screen 2xl:h-screen"></span>
         <div
-          className="inline-block align-center backdrop-filter backdrop-blur-xl bg-white/40 border-2 border-white rounded-lg text-left overflow-hidden shadow-xl transform-gpu transition-all sm:my-8 align-middle max-w-lg w-full "
-          role="dialog"
+          className="inline-block align-center backdrop-filter backdrop-blur-xl bg-white/40 border-2 border-white rounded-lg text-left overflow-hidden shadow-xl transform-gpu transition-all sm:my-8 align-middle max-w-lg w-full"
+          role="PopOvers"
           aria-modal="true"
           aria-labelledby="modal-headline">
           {props.enableEdit ? (

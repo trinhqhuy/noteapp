@@ -5,7 +5,7 @@ import { Store } from "../context/GobalState";
 import { useDispatch, useSelector } from "react-redux";
 import { createAxios } from "../redux/createInstance";
 import { loginSuccess } from "../redux/authSlice";
-import { getAllFoler, updateFolder } from "../redux/apiRequest";
+import { getAllFolder, updateFolder } from "../redux/apiRequest";
 
 const UpdateFolderForm = () => {
   const { state, dispatch } = useContext(Store);
@@ -32,7 +32,7 @@ const UpdateFolderForm = () => {
         isDispatch,
         axiosJWT
       );
-      await getAllFoler(
+      await getAllFolder(
         user?.accessToken,
         user?._id,
         isDispatch,

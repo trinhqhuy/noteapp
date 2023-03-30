@@ -8,11 +8,11 @@ router.get(
   middlewareController.verifyToken,
   folderController.getAllFolder
 );
-router.get(
-  "/search/:name",
-  middlewareController.verifyToken,
-  folderController.searchMemberFolder
-);
+// router.get(
+//   "/search/:name",
+//   middlewareController.verifyToken,
+//   folderController.searchMemberFolder
+// );
 router.post("/", middlewareController.verifyToken, folderController.addFolder);
 router.post(
   "/add",

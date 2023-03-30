@@ -5,7 +5,7 @@ import { addNoteSuccess } from "../redux/noteSlide";
 import { useDispatch, useSelector } from "react-redux";
 import { createAxios } from "../redux/createInstance";
 import { loginSuccess } from "../redux/authSlice";
-import { getAllFoler } from "../redux/apiRequest";
+import { getAllFolder } from "../redux/apiRequest";
 import { readAllNote } from "../redux/apiRequest";
 import { Store } from "../context/GobalState";
 
@@ -34,7 +34,7 @@ const AddNoteForm = () => {
         isDispatch,
         axiosJWT
       );
-      await getAllFoler(user?.accessToken, user?._id, isDispatch, axiosJWT);
+      await getAllFolder(user?.accessToken, user?._id, isDispatch, axiosJWT);
     }
   };
   // console.log(handleClick.state.isIdFolder); // error

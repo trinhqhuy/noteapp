@@ -3,6 +3,8 @@ import authReducer from "./authSlice";
 import userReducer from "./userSlice";
 import folderReducer from "./folderSlide";
 import noteReducer from "./noteSlide";
+import memberSlide from "./memberSlide";
+import notificationSlide from "./notificationSlide";
 import {
   persistStore,
   persistReducer,
@@ -19,6 +21,8 @@ const rootReducer = combineReducers({
   user: userReducer,
   folder: folderReducer,
   notes: noteReducer,
+  members: memberSlide,
+  notifications: notificationSlide,
 });
 const persistConfig = {
   key: "root",

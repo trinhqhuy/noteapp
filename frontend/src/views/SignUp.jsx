@@ -66,7 +66,7 @@ const SignUp = () => {
   });
   useEffect(() => {
     if (user) {
-      navigate("/");
+      navigate("/login");
     }
   });
   return (

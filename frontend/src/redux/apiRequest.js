@@ -6,6 +6,9 @@ import {
   registerStart,
   registerSuccess,
   registerFailed,
+  signOutStart,
+  signOutSuccess,
+  signOutFailed,
 } from "./authSlice";
 import {
   getFolderStart,
@@ -34,8 +37,33 @@ import {
   deleteNoteSuccess,
   deleteNoteFailed,
 } from "./noteSlide";
-
-import { getUsersFailed, getUsersSuccess, getUsersStart } from "./userSlice";
+import {
+  getAllMemberStart,
+  getAllMemberSuccess,
+  getAllMemberFailed,
+  deleteMemberStart,
+  deleteMemberSuccess,
+  deleteMemberFailed,
+  leaveGroupStart,
+  leaveGroupSuccess,
+  leaveGroupFailed,
+} from "./memberSlide";
+import {
+  getAllNotifiSuccess,
+  getAllNotifiFailed,
+  getAllNotifiStart,
+  updateNotificationStart,
+  updateNotificationSuccess,
+  updateNotificationFailed,
+} from "./notificationSlide";
+import {
+  getUsersFailed,
+  getUsersSuccess,
+  getUsersStart,
+  updateUserStart,
+  updateUserSuccess,
+  updateUserFailed,
+} from "./userSlice";
 axios.defaults.withCredentials = true;
 export const loginUser = async (user, dispatch, navigate) => {
   dispatch(loginStart());
@@ -46,13 +74,8 @@ export const loginUser = async (user, dispatch, navigate) => {
         "Content-Type": "application/json; charset=UTF-8",
       },
     });
-    const setDay = new Date();
-    setDay.setTime(setDay.getTime() + 30 * 24 * 60 * 60 * 1000);
-    let expiresDay = "expires=" + setDay.toUTCString();
-    const refreshToken = res.data.refreshToken;
-    document.cookie = `refreshToken=${refreshToken};${expiresDay};path=/;sameSite=strict;secure`;
     dispatch(loginSuccess(res.data));
-    navigate("/");
+    navigate("/home");
   } catch (err) {
     dispatch(loginFailed(err));
   }
@@ -68,6 +91,25 @@ export const registerUser = async (user, dispatch, navigate) => {
     dispatch(registerFailed(err));
   }
 };
+export const signOut = async (
+  accessToken,
+  id,
+  axiosJWT,
+  dispatch,
+  navigate
+) => {
+  dispatch(signOutStart());
+
+  try {
+    await axiosJWT.post("http://localhost:8000/v1/auth/logout", id, {
+      headers: { token: `Bearer ${accessToken}` },
+    });
+    dispatch(signOutSuccess());
+    navigate("/login");
+  } catch (err) {
+    dispatch(signOutFailed(err));
+  }
+};
 // export const getAllUser = async(accessToken, dispatch) => {
 //     dispatch(getUsersStart())
 //     try {
@@ -76,10 +118,10 @@ export const registerUser = async (user, dispatch, navigate) => {
 //         })
 //         dispatch(getAllFolderSuccess())
 //     }catch(err) {
-//         dispatch(getAllFolderFailed())
+//         dispatch(getAllFolderFƒailed())
 //     }
 // }
-export const getAllFoler = async (accessToken, id, dispatch, axiosJWT) => {
+export const getAllFolder = async (accessToken, id, dispatch, axiosJWT) => {
   dispatch(getFolderStart());
   try {
     const res = await axiosJWT.get("http://localhost:8000/v1/folder/" + id, {
@@ -199,19 +241,109 @@ export const addMemberFolder = async (
     dispatch(addMemnberFailed(err));
   }
 };
-export const searchMember = async (accessToken, name, dispatch, axiosJWT) => {
+export const searchMember = async (accessToken, user, dispatch, axiosJWT) => {
   dispatch(getUsersStart());
   try {
-    const res = await axiosJWT.get(
-      "http://localhost:8000/v1/folder/search/" + name,
-      {
-        headers: { token: `Bearer ${accessToken}` },
-      }
-    );
+    const res = await axiosJWT.post("http://localhost:8000/v1/member/", user, {
+      headers: { token: `Bearer ${accessToken}` },
+    });
     dispatch(getUsersSuccess());
     return { data: res.data, status: res.status };
   } catch (err) {
     dispatch(getUsersFailed());
+    return { error: err, status: err.response ? err.response.status : null };
+  }
+};
+export const getAllMember = async (accessToken, id, dispatch, axiosJWT) => {
+  dispatch(getAllMemberStart());
+  try {
+    const res = await axiosJWT.get("http://localhost:8000/v1/member/" + id, {
+      headers: { token: `Bearer ${accessToken}` },
+    });
+    dispatch(getAllMemberSuccess(res.data));
+  } catch (err) {
+    dispatch(getAllMemberFailed(err));
+  }
+};
+export const getNotification = async (
+  accessToken,
+  idUser,
+  dispatch,
+  axiosJWT
+) => {
+  dispatch(getAllNotifiStart());
+  try {
+    const res = await axiosJWT.get(
+      "http://localhost:8000/v1/member/noti/" + idUser,
+      {
+        headers: { token: `Bearer ${accessToken}` },
+      }
+    );
+    dispatch(getAllNotifiSuccess(res.data));
+  } catch (err) {
+    dispatch(getAllNotifiFailed(err));
+  }
+};
+export const updateNotification = async (
+  accessToken,
+  state,
+  dispatch,
+  axiosJWT
+) => {
+  dispatch(updateNotificationStart());
+  try {
+    const res = await axiosJWT.post(
+      "http://localhost:8000/v1/member/updatenoti/",
+      state,
+      {
+        headers: { token: `Bearer ${accessToken}` },
+      }
+    );
+    dispatch(updateNotificationSuccess(res.data));
+  } catch (err) {
+    dispatch(updateNotificationFailed(err));
+  }
+};
+
+export const deleteMember = async (accessToken, member, dispatch, axiosJWT) => {
+  dispatch(deleteMemberStart());
+  try {
+    const res = await axiosJWT.get(
+      "http://localhost:8000/v1/member/delete/" + member,
+      {
+        headers: { token: `Bearer ${accessToken}` },
+      }
+    );
+    dispatch(deleteMemberSuccess(res.data));
+  } catch (err) {
+    dispatch(deleteMemberFailed(err));
+  }
+};
+export const leaveGroup = async (accessToken, member, dispatch, axiosJWT) => {
+  dispatch(leaveGroupStart());
+  try {
+    const res = await axiosJWT.post(
+      "http://localhost:8000/v1/member/leave/",
+      member,
+      {
+        headers: { token: `Bearer ${accessToken}` },
+      }
+    );
+    dispatch(leaveGroupSuccess(res.data));
+  } catch (err) {
+    dispatch(leaveGroupFailed(err));
+  }
+};
+export const updateInfoUser = async (accessToken, user, dispatch, axiosJWT) => {
+  dispatch(updateUserStart());
+  try {
+    const res = await axiosJWT.put("http://localhost:8000/v1/user/", user, {
+      headers: { token: `Bearer ${accessToken}` },
+    });
+    dispatch(updateUserSuccess(res.data));
+    return { data: res.data, status: res.status };
+  } catch (err) {
+    dispatch(updateUserFailed());
     return { error: err, status: err.response ? err.response.status : null };
   }
 };

@@ -93,7 +93,11 @@ const ShowMoreNote = (props) => {
         <button
           className="group text-white bg-gradient-to-br from-lightBlue to-cyanBlue hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-white dark:focus:ring-greatblue font-medium rounded-lg text-xs sm:text-sm md:text-sm lg:text-sm xl:text-sm 2xl:text-sm h-10 min-w-fit px-3.5 py-2.5 w-5 text-center mr-2"
           onClick={handleClickPinNoteSubmit}>
-          <i className="fa-regular fa-thumbtack group-hover:pr-3"></i>
+          {state.setNote.setNote.pin ? (
+            <i className="fa-regular fa-thumbtack group-hover:pr-3"></i>
+          ) : (
+            <i className="fa-solid fa-thumbtack group-hover:pr-3"></i>
+          )}
           <span className="hidden group-hover:contents">
             {state.setNote.setNote.pin ? "Unpin note" : "Pin note"}
           </span>

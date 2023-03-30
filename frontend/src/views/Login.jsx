@@ -57,12 +57,12 @@ const Login = () => {
   });
   useEffect(() => {
     if (currentUser) {
-      navigate("/");
+      navigate("/home");
     }
   });
 
   return (
-    <div className="grid grid-cols-1 gap-3 md:relative lg:relative xl:relative 2xl:relative md:flex lg:flex xl:flex 2xl:flex">
+    <div className="grid grid-cols-1 md:relative lg:relative xl:relative 2xl:relative md:flex lg:flex xl:flex 2xl:flex">
       <SideBarAuth />
       <div className="md:w-3/5 lg:w-3/5 xl:w-4/6 2xl:w-4/6 bg-[#F0F5FE] dark:bg-gray-800 min-h-screen flex flex-col justify-center items-center">
         {isToast && (
