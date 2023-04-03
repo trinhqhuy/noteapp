@@ -117,16 +117,15 @@ const authController = {
           const setDay = new Date();
           setDay.setTime(setDay.getTime() + 100 * 24 * 60 * 60 * 1000);
           // refreshTokens.push(refreshToken);
-          const { password, ...others } = user._doc;
           res.header("Access-Control-Allow-Origin");
           res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
           res.header("Access-Control-Allow-Header");
           res.header("Content-Type", "application/json; charset=UTF-8");
+          const { password, ...others } = user._doc;
           res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
             secure: true,
-            path: "/",
-            sameSite: "Strict",
+            sameSite: "strict",
             expires: setDay,
           });
           return res.status(200).json({ ...others, accessToken, refreshToken }); // luu cookie o phia frontend

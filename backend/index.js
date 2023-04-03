@@ -37,12 +37,12 @@ mongoose.connect(
   process.env.MONGOOSE_URL,
   () => {
     console.log("MongoDB is connected");
-  },
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
   }
+  // {
+  //   useNewUrlParser: true,
+  //   useUnifiedTopology: true,
+  //   useFindAndModify: false,
+  // }
 );
 app.listen(port, () => {
   console.log(`Server is runing ${port}`);

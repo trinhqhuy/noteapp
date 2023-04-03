@@ -6,6 +6,7 @@ import {
   lazy,
   Suspense,
 } from "react";
+import loadable from "@loadable/component";
 import Loader from "../components/Loader";
 import MainArea from "../components/MainArea";
 import SideBar from "../components/SideBar";
@@ -17,41 +18,63 @@ import { loginSuccess } from "../redux/authSlice";
 import { createAxios } from "../redux/createInstance";
 import { Store } from "../context/GobalState";
 import ItemsPopOvers from "../components/ItemsPopOvers";
-import useDynamicImport from "../hooks/useDynamicImport";
 // import ShowMoreNote from "../features/ShowMoreNote";
 // import AddNoteForm from "../features/AddNoteForm";
 // import AddFolerForm from "../features/AddFolerForm";
 // import Modal from "../components/Modal";
 // import RightSideBar from "../components/RightSideBar";
-const AddFolderForm = lazy(() => import("../features/AddFolerForm"));
-const AddNoteForm = lazy(() => import("../features/AddNoteForm"));
-const RightSideBar = lazy(() => import("../components/RightSideBar"));
-// const Modal = lazy(() => import("../components/Modal"));
-const ShowMoreNote = lazy(() => import("../features/ShowMoreNote"));
-const UpdateFolderForm = lazy(() => import("../features/UpdateFolderForm"));
-// import AddMemberForm from "../features/AddMemberForm";
-const AddMemberForm = lazy(() => import("../features/AddMemberForm"));
-const EditProfile = lazy(() => import("../features/EditProfileForm"));
+const AddFolderForm = loadable(() => import("../features/AddFolerForm"), {
+  fallback: <Loader />,
+});
+const AddNoteForm = loadable(() => import("../features/AddNoteForm"), {
+  fallback: <Loader />,
+});
+const RightSideBar = loadable(() => import("../components/RightSideBar"), {
+  fallback: <Loader />,
+});
+// const Modal = loadable(() => import("../components/Modal"));
+const ShowMoreNote = loadable(() => import("../features/ShowMoreNote"), {
+  fallback: <Loader />,
+});
+const UpdateFolderForm = loadable(
+  () => import("../features/UpdateFolderForm"),
+  {
+    fallback: <Loader />,
+  }
+);
+// import AddMemberForm from "../features/AddMemberForm"
+const AddMemberForm = loadable(() => import("../features/AddMemberForm"), {
+  fallback: <Loader />,
+});
+const EditProfile = loadable(() => import("../features/EditProfileForm"), {
+  fallback: <Loader />,
+});
 import Fade from "../components/Fade";
 import Modal from "../components/Modal";
 // import ProfileCard from "../components/ProfileCard";
-const ProfileCard = lazy(() => import("../components/ProfileCard"));
-const Toast = lazy(() => import("../components/Toast"));
-const PopOvers = lazy(() => import("../components/PopOvers"));
+const ProfileCard = loadable(() => import("../components/ProfileCard"), {
+  fallback: <Loader />,
+});
+const Toast = loadable(() => import("../components/Toast"), {
+  fallback: <Loader />,
+});
+const PopOvers = loadable(() => import("../components/PopOvers"), {
+  fallback: <Loader />,
+});
 
 const Home = () => {
-  const isAddFolderFormLoaded = useDynamicImport("../features/AddFolerForm");
-  const isAddNoteFormLoaded = useDynamicImport("../features/AddNoteForm");
-  const isShowMoreNoteLoaded = useDynamicImport("../features/ShowMoreNote");
-  const isUpdateFolderFormLoaded = useDynamicImport(
-    "../features/UpdateFolderForm"
-  );
-  const isAddMemberFormLoaded = useDynamicImport("../features/AddMemberForm");
-  const isEditProfileLoaded = useDynamicImport("../features/EditProfileForm");
-  const isRightSideBarLoaded = useDynamicImport("../components/RightSideBar");
-  const isToastLoaded = useDynamicImport("../components/Toast");
-  const isPopOverLoaded = useDynamicImport("../components/PopOvers");
-  const isProfileCardLoaded = useDynamicImport("../components/ProfileCard");
+  // const isAddFolderFormLoaded = useDynamicImport("../features/AddFolerForm");
+  // const isAddNoteFormLoaded = useDynamicImport("../features/AddNoteForm");
+  // const isShowMoreNoteLoaded = useDynamicImport("../features/ShowMoreNote");
+  // const isUpdateFolderFormLoaded = useDynamicImport(
+  //   "../features/UpdateFolderForm"
+  // );
+  // const isAddMemberFormLoaded = useDynamicImport("../features/AddMemberForm");
+  // const isEditProfileLoaded = useDynamicImport("../features/EditProfileForm");
+  // const isRightSideBarLoaded = useDynamicImport("../components/RightSideBar");
+  // const isToastLoaded = useDynamicImport("../components/Toast");
+  // const isPopOverLoaded = useDynamicImport("../components/PopOvers");
+  // const isProfileCardLoaded = useDynamicImport("../components/ProfileCard");
   // const isShowModal = useContext(ButtonContext);
   const { state, dispatch } = useContext(Store);
   const [isParentValue, setIsParentValue] = useState(0); // send id to child
@@ -81,13 +104,11 @@ const Home = () => {
 
   const ShowToast = state.isToast && (
     <Suspense fallback={<Loader />}>
-      {isToastLoaded && (
-        <Toast
-          setToast={() => dispatch({ type: "isToast", payload: false })}
-          message="Do you want to delete this folder ?"
-          isDelete={true}
-        />
-      )}
+      <Toast
+        setToast={() => dispatch({ type: "isToast", payload: false })}
+        message="Do you want to delete this folder ?"
+        isDelete={true}
+      />
     </Suspense>
   );
   // const notiLength = notiArr.length - 1;
@@ -107,81 +128,75 @@ const Home = () => {
     : null;
   const ShowPopOversNoti = state.isPopOversNotificaton && (
     <Suspense fallback={<Loader />}>
-      {isPopOverLoaded && (
-        <PopOvers
-          title="Notificaton"
-          action={() =>
-            dispatch({ type: "isPopOversNotificaton", payload: false })
-          }
-          item={noti}
-        />
-      )}
+      <PopOvers
+        title="Notificaton"
+        action={() =>
+          dispatch({ type: "isPopOversNotificaton", payload: false })
+        }
+        item={noti}
+      />
     </Suspense>
   );
   const PopOverProfile = (
     <Suspense fallback={<Loader />}>
-      {isProfileCardLoaded && (
-        <ProfileCard name={user?.username} img={user?.avatar}></ProfileCard>
-      )}
+      <ProfileCard name={user?.username} img={user?.avatar}></ProfileCard>
     </Suspense>
   );
 
   const ShowPopOversAccount = state.isPopOversAccount && (
     <Suspense fallback={<Loader />}>
-      {isPopOverLoaded && (
-        <PopOvers
-          title="Account"
-          action={() => dispatch({ type: "isPopOversAccount", payload: false })}
-          profile={PopOverProfile}
-        />
-      )}
+      <PopOvers
+        title="Account"
+        action={() => dispatch({ type: "isPopOversAccount", payload: false })}
+        profile={PopOverProfile}
+      />
     </Suspense>
   );
   const ShowSearchMember = state.isSearchMember && (
     <Suspense fallback={<Loader />}>
       <Modal title="Manage member" enableEdit={false}>
-        {isAddMemberFormLoaded && <AddMemberForm />}
+        <AddMemberForm />
       </Modal>
     </Suspense>
   );
   const ShowAddFolderModal = state.isAddFolderModal && (
     <Suspense fallback={<Loader />}>
       <Modal title="Add folder" enableEdit={false}>
-        {isAddFolderFormLoaded && <AddFolderForm />}
+        <AddFolderForm />
       </Modal>
     </Suspense>
   );
   const ShowAddNoteModal = state.isAddNoteModal && (
     <Suspense fallback={<Loader />}>
       <Modal title="Add note" enableEdit={false}>
-        {isAddNoteFormLoaded && <AddNoteForm />}
+        <AddNoteForm />
       </Modal>
     </Suspense>
   );
   const ShowMoreNoteFeature = state.isShowMoreNote && (
     <Suspense fallback={<Loader />}>
       <Modal aNote={state.setNote} enableEdit={true}>
-        {isShowMoreNoteLoaded && <ShowMoreNote aNote={state.setNote} />}
+        <ShowMoreNote aNote={state.setNote} />
       </Modal>
     </Suspense>
   );
   const ShowUpdateFolderModal = state.isUpdateFolderModal && (
     <Suspense fallback={<Loader />}>
       <Modal title="Update folder" enableEdit={false}>
-        {isUpdateFolderFormLoaded && <UpdateFolderForm />}
+        <UpdateFolderForm />
       </Modal>
     </Suspense>
   );
   const ShowEditProfile = state.isShowEditProfile && (
     <Suspense fallback={<Loader />}>
       <Modal title="Edit profile" enableEdit={false}>
-        {isEditProfileLoaded && <EditProfile />}
+        <EditProfile />
       </Modal>
     </Suspense>
   );
   const ShowRightSideBar = (
     <Suspense fallback={<Loader />}>
-      {isRightSideBarLoaded && <RightSideBar />}
+      <RightSideBar />
     </Suspense>
   );
   return (

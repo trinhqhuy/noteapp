@@ -45,13 +45,13 @@ function Index() {
         </div>
       </div>
       <img
-        className="w-[500px] sm:w-[500px] md:w-[500px] lg:w-[500px] xl:w-[600px] 2xl:w-[700px] dark:hidden fixed z-30 top-32 sm:top-20 md:top-20 lg:top-32 xl:top-36 2xl:top-40 left-0 sm:left-0 md:left-0 lg:left-20 xl:left-24 2xl:left-32"
+        className="dark:hidden fixed z-30 w-[500px] sm:w-[500px] md:w-[500px] lg:w-[500px] xl:w-[600px] 2xl:w-[700px] top-32 sm:top-20 md:top-20 lg:top-32 xl:top-36 2xl:top-40 left-0 sm:left-0 md:left-0 lg:left-20 xl:left-24 2xl:left-32"
         // width={500}
         src={SideDesign}
         loading="lazy"
       />
       <img
-        className="w-[500px] sm:w-[500px] md:w-[500px] lg:w-[500px] xl:w-[600px] 2xl:w-[700px]  hidden dark:block fixed z-20 top-32 sm:top-20 md:top-20 lg:top-32 xl:top-36 2xl:top-40 left-0 sm:left-0 md:left-0 lg:left-20 xl:left-24 2xl:left-32"
+        className="hidden dark:block fixed z-20 w-[500px] sm:w-[500px] md:w-[500px] lg:w-[500px] xl:w-[600px] 2xl:w-[700px] top-32 sm:top-20 md:top-20 lg:top-32 xl:top-36 2xl:top-40 left-0 sm:left-0 md:left-0 lg:left-20 xl:left-24 2xl:left-32"
         // width={500}
         src={darkSide}
         loading="lazy"
